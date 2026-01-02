@@ -1,11 +1,11 @@
 """
-CalorieSnap - KI-basierte Kalorienzähl-App
-Mobile-optimierte Streamlit Version für PyCharm
+CalorieSnap - AI-Powered Nutrition Tracking
+Professional Mobile-Optimized Streamlit App
 
 Installation:
 pip install streamlit anthropic pillow plotly
 
-Starten:
+Run:
 streamlit run app.py
 """
 
@@ -19,100 +19,153 @@ import io
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Page Configuration - Mobile optimiert
+# Page Configuration
 st.set_page_config(
     page_title="CalorieSnap",
-    page_icon="🍽️",
+    page_icon="🔥",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS für Mobile-Optimierung
+# Professional CSS - No Emoji Style
 st.markdown("""
 <style>
-    /* Mobile-optimiertes Design */
+    /* Clean Professional Design */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
     .main {
         padding: 0.5rem;
+        background: #fafafa;
     }
-
+    
     .stButton>button {
         width: 100%;
-        height: 60px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 15px;
+        height: 56px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 12px;
         border: none;
-        background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+        background: #10b981;
         color: white;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+        transition: all 0.2s;
     }
-
+    
     .stButton>button:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        background: #059669;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
-
-    /* Header Styling */
+    
+    /* Clean Headers */
     h1 {
-        background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 2.5rem;
-        margin-bottom: 0;
+        color: #111827;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.025em;
     }
-
-    /* Card Styling */
+    
+    h3 {
+        color: #374151;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem 0;
+    }
+    
+    /* Professional Card Styling */
     .metric-card {
         background: white;
-        padding: 1.5rem;
-        border-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 1.25rem;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         text-align: center;
-        margin: 0.5rem 0;
-    }
-
-    .meal-card {
-        background: white;
-        padding: 1rem;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin: 0.5rem 0;
         border: 1px solid #e5e7eb;
     }
-
-    /* Progress Bar */
+    
+    .meal-card {
+        background: white;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin: 0.75rem 0;
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s;
+    }
+    
+    .meal-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Modern Progress Bar */
     .stProgress > div > div > div {
-        background: linear-gradient(90deg, #10b981 0%, #14b8a6 100%);
-        height: 12px;
-        border-radius: 10px;
+        background: #10b981;
+        height: 8px;
+        border-radius: 4px;
     }
-
-    /* Tabs */
+    
+    /* Clean Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 4px;
+        background: white;
+        padding: 4px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
     }
-
+    
     .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        border-radius: 10px;
-        padding: 0 24px;
-        font-weight: bold;
+        height: 44px;
+        border-radius: 8px;
+        padding: 0 20px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #6b7280;
+        background: transparent;
+        border: none;
     }
-
+    
+    .stTabs [aria-selected="true"] {
+        background: #10b981 !important;
+        color: white !important;
+    }
+    
     /* File Uploader */
     .uploadedFile {
-        border-radius: 15px;
+        border-radius: 12px;
+        border: 2px dashed #d1d5db;
     }
-
-    /* Mobile Touch Optimization */
+    
+    [data-testid="stFileUploader"] {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        border: 2px dashed #d1d5db;
+    }
+    
+    /* Info/Warning Boxes */
+    .stAlert {
+        border-radius: 12px;
+        border: none;
+    }
+    
+    /* Mobile Optimization */
     @media (max-width: 768px) {
         .stButton>button {
-            height: 70px;
-            font-size: 20px;
+            height: 60px;
+            font-size: 16px;
         }
-
+        
         h1 {
-            font-size: 2rem;
+            font-size: 1.75rem;
+        }
+        
+        .main {
+            padding: 0.25rem;
         }
     }
 </style>
@@ -128,16 +181,12 @@ if 'anthropic_api_key' not in st.session_state:
 
 
 def analyze_food_image(image_file):
-    """Analysiert Essen-Bild mit Claude Vision API"""
+    """Analyze food image using Claude Vision API"""
     try:
-        # Image zu Base64 konvertieren
         img_bytes = image_file.getvalue()
         base64_image = base64.b64encode(img_bytes).decode('utf-8')
-
-        # Determine image type
         image_type = image_file.type
 
-        # Claude API Client
         client = anthropic.Anthropic(api_key=st.session_state.anthropic_api_key)
 
         message = client.messages.create(
@@ -157,26 +206,25 @@ def analyze_food_image(image_file):
                         },
                         {
                             "type": "text",
-                            "text": """Analysiere dieses Essen-Foto und gib mir die Informationen in folgendem JSON-Format zurück (nur JSON, keine Markdown-Backticks):
+                            "text": """Analyze this food photo and return the information in the following JSON format (only JSON, no markdown):
 
 {
-  "foodName": "Name des Essens auf Deutsch",
-  "calories": geschätzte Kalorien als Zahl,
-  "protein": Protein in Gramm als Zahl,
-  "carbs": Kohlenhydrate in Gramm als Zahl,
-  "fat": Fett in Gramm als Zahl,
-  "portionSize": "Portionsgröße Beschreibung",
-  "confidence": "hoch/mittel/niedrig"
+  "foodName": "food name in English",
+  "calories": estimated calories as number,
+  "protein": protein in grams as number,
+  "carbs": carbohydrates in grams as number,
+  "fat": fat in grams as number,
+  "portionSize": "portion size description",
+  "confidence": "high/medium/low"
 }
 
-Schätze die Werte so genau wie möglich basierend auf dem Bild."""
+Estimate the values as accurately as possible based on the image."""
                         }
                     ]
                 }
             ]
         )
 
-        # Parse Response
         response_text = message.content[0].text
         clean_text = response_text.replace('```json', '').replace('```', '').strip()
         food_data = json.loads(clean_text)
@@ -184,12 +232,12 @@ Schätze die Werte so genau wie möglich basierend auf dem Bild."""
         return food_data
 
     except Exception as e:
-        st.error(f"Fehler bei der Analyse: {str(e)}")
+        st.error(f"Analysis error: {str(e)}")
         return None
 
 
 def add_meal(food_data, image_file):
-    """Fügt Mahlzeit zur Liste hinzu"""
+    """Add meal to list"""
     meal = {
         'id': datetime.now().timestamp(),
         'timestamp': datetime.now().isoformat(),
@@ -200,13 +248,13 @@ def add_meal(food_data, image_file):
 
 
 def get_today_meals():
-    """Holt alle Mahlzeiten von heute"""
+    """Get all meals from today"""
     today = datetime.now().date()
     return [m for m in st.session_state.meals if datetime.fromisoformat(m['timestamp']).date() == today]
 
 
 def get_today_totals():
-    """Berechnet heutige Gesamtwerte"""
+    """Calculate today's totals"""
     today_meals = get_today_meals()
     return {
         'calories': sum(m['calories'] for m in today_meals),
@@ -218,7 +266,7 @@ def get_today_totals():
 
 
 def get_weekly_data():
-    """Holt Daten der letzten 7 Tage"""
+    """Get data from last 7 days"""
     data = []
     for i in range(6, -1, -1):
         date = datetime.now().date() - timedelta(days=i)
@@ -232,82 +280,84 @@ def get_weekly_data():
 
 
 # ==================== HEADER ====================
-st.markdown("<h1>🍽️ CalorieSnap</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color: #6b7280; margin-top: -10px;'>KI-Powered Food Tracking</p>", unsafe_allow_html=True)
+st.markdown("<h1>CalorieSnap</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color: #6b7280; margin-top: -4px; font-size: 0.9rem;'>AI-Powered Nutrition Tracking</p>", unsafe_allow_html=True)
 
-# API Key Input (nur wenn nicht gesetzt)
+# API Key Configuration
 if not st.session_state.anthropic_api_key:
-    with st.expander("⚙️ API Key Konfiguration", expanded=True):
-        st.info(
-            "Für die KI-Bilderkennung wird ein Anthropic API Key benötigt. Du kannst ihn kostenlos auf https://console.anthropic.com erstellen.")
+    with st.expander("API Configuration", expanded=True):
+        st.info("An Anthropic API key is required for AI food recognition. Get one free at https://console.anthropic.com")
         api_key = st.text_input("Anthropic API Key", type="password")
-        if st.button("API Key speichern"):
+        if st.button("Save API Key"):
             if api_key:
                 st.session_state.anthropic_api_key = api_key
-                st.success("API Key gespeichert!")
+                st.success("API Key saved successfully")
                 st.rerun()
 
 # ==================== TABS ====================
-tab1, tab2, tab3 = st.tabs(["🏠 Home", "📊 Statistiken", "⚙️ Einstellungen"])
+tab1, tab2, tab3 = st.tabs(["Overview", "Analytics", "Settings"])
 
-# ==================== HOME TAB ====================
+# ==================== OVERVIEW TAB ====================
 with tab1:
-    # Foto Upload / Kamera
-    st.markdown("### 📸 Mahlzeit hinzufügen")
+    # Photo Upload
+    st.markdown("### Add Meal")
 
     uploaded_file = st.file_uploader(
-        "Foto hochladen oder Kamera verwenden",
+        "Upload photo or use camera",
         type=['jpg', 'jpeg', 'png'],
         label_visibility="collapsed"
     )
 
     if uploaded_file and st.session_state.anthropic_api_key:
-        with st.spinner("🤖 Analysiere Essen..."):
+        with st.spinner("Analyzing food..."):
             food_data = analyze_food_image(uploaded_file)
 
             if food_data:
-                st.success("✅ Essen erkannt!")
+                st.success("Food recognized successfully")
 
                 # Preview
                 col1, col2 = st.columns([1, 2])
                 with col1:
-                    st.image(uploaded_file, use_container_width=True)
+                    st.image(uploaded_file, width=120)
                 with col2:
                     st.markdown(f"**{food_data['foodName']}**")
-                    st.markdown(f"🔥 **{food_data['calories']} kcal**")
-                    st.markdown(f"📏 {food_data['portionSize']}")
-                    st.markdown(
-                        f"Protein: {food_data['protein']}g • Carbs: {food_data['carbs']}g • Fett: {food_data['fat']}g")
+                    st.markdown(f"<span style='color: #10b981; font-weight: 600; font-size: 1.15rem;'>{food_data['calories']} kcal</span>", unsafe_allow_html=True)
+                    st.markdown(f"<span style='color: #6b7280; font-size: 0.9rem;'>{food_data['portionSize']}</span>", unsafe_allow_html=True)
+                    st.markdown(f"<span style='font-size: 0.9rem;'>P: {food_data['protein']}g • C: {food_data['carbs']}g • F: {food_data['fat']}g</span>", unsafe_allow_html=True)
 
-                if st.button("➕ Mahlzeit speichern", type="primary"):
+                if st.button("Add Meal", type="primary"):
                     add_meal(food_data, uploaded_file)
-                    st.success("Mahlzeit gespeichert!")
+                    st.success("Meal saved successfully")
                     st.rerun()
 
     elif uploaded_file and not st.session_state.anthropic_api_key:
-        st.warning("⚠️ Bitte zuerst API Key eingeben (oben aufklappen)")
+        st.warning("Please enter your API key in the configuration above")
 
     st.markdown("---")
 
-    # Heutiges Ziel
+    # Daily Goal
     totals = get_today_totals()
     goal = st.session_state.daily_goal
     progress = min((totals['calories'] / goal) * 100, 100)
 
-    st.markdown("### 🎯 Heutiges Ziel")
+    st.markdown("### Daily Goal")
 
-    # Progress Card
+    # Modern Progress Card
     st.markdown(f"""
-    <div style='background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); 
-                padding: 2rem; border-radius: 20px; color: white; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);'>
+    <div style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                padding: 1.75rem; border-radius: 16px; color: white; 
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);'>
         <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;'>
             <div>
-                <p style='margin: 0; opacity: 0.9; font-size: 0.9rem;'>Heutiges Ziel</p>
-                <h2 style='margin: 0.5rem 0; font-size: 2.5rem;'>{totals['calories']} <span style='font-size: 1.5rem; opacity: 0.8;'>/ {goal}</span></h2>
-                <p style='margin: 0; opacity: 0.9;'>kcal</p>
+                <p style='margin: 0; opacity: 0.9; font-size: 0.875rem; font-weight: 500;'>Today's Target</p>
+                <h2 style='margin: 0.5rem 0 0 0; font-size: 2.25rem; font-weight: 700;'>
+                    {totals['calories']} 
+                    <span style='font-size: 1.25rem; opacity: 0.8; font-weight: 500;'>/ {goal}</span>
+                </h2>
+                <p style='margin: 0.25rem 0 0 0; opacity: 0.9; font-size: 0.875rem;'>kcal</p>
             </div>
             <div style='text-align: right;'>
-                <h1 style='margin: 0; font-size: 3rem;'>{int(progress)}%</h1>
+                <h1 style='margin: 0; font-size: 2.75rem; font-weight: 700;'>{int(progress)}%</h1>
             </div>
         </div>
     </div>
@@ -315,63 +365,67 @@ with tab1:
 
     st.progress(progress / 100)
 
-    # Makros
-    st.markdown("### 📊 Makronährstoffe")
+    # Macros
+    st.markdown("### Macronutrients")
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown(f"""
-        <div class='metric-card' style='background: #eff6ff; border: 2px solid #3b82f6;'>
-            <p style='color: #3b82f6; font-size: 0.8rem; font-weight: bold; margin: 0;'>PROTEIN</p>
-            <h2 style='color: #1e40af; margin: 0.5rem 0;'>{totals['protein']}g</h2>
+        <div class='metric-card' style='background: #eff6ff; border: 1px solid #dbeafe;'>
+            <p style='color: #3b82f6; font-size: 0.75rem; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;'>Protein</p>
+            <h2 style='color: #1e40af; margin: 0.5rem 0; font-size: 1.75rem; font-weight: 700;'>{totals['protein']}<span style='font-size: 1rem; color: #60a5fa;'>g</span></h2>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div class='metric-card' style='background: #f0fdf4; border: 2px solid #10b981;'>
-            <p style='color: #10b981; font-size: 0.8rem; font-weight: bold; margin: 0;'>CARBS</p>
-            <h2 style='color: #065f46; margin: 0.5rem 0;'>{totals['carbs']}g</h2>
+        <div class='metric-card' style='background: #f0fdf4; border: 1px solid #dcfce7;'>
+            <p style='color: #10b981; font-size: 0.75rem; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;'>Carbs</p>
+            <h2 style='color: #065f46; margin: 0.5rem 0; font-size: 1.75rem; font-weight: 700;'>{totals['carbs']}<span style='font-size: 1rem; color: #34d399;'>g</span></h2>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
-        <div class='metric-card' style='background: #fffbeb; border: 2px solid #f59e0b;'>
-            <p style='color: #f59e0b; font-size: 0.8rem; font-weight: bold; margin: 0;'>FETT</p>
-            <h2 style='color: #92400e; margin: 0.5rem 0;'>{totals['fat']}g</h2>
+        <div class='metric-card' style='background: #fffbeb; border: 1px solid #fef3c7;'>
+            <p style='color: #f59e0b; font-size: 0.75rem; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;'>Fat</p>
+            <h2 style='color: #92400e; margin: 0.5rem 0; font-size: 1.75rem; font-weight: 700;'>{totals['fat']}<span style='font-size: 1rem; color: #fbbf24;'>g</span></h2>
         </div>
         """, unsafe_allow_html=True)
 
-    # Heutige Mahlzeiten
-    st.markdown("### 🍽️ Heutige Mahlzeiten")
+    # Today's Meals
+    st.markdown("### Today's Meals")
 
     today_meals = get_today_meals()
 
     if not today_meals:
-        st.info("Noch keine Mahlzeiten heute. Füge deine erste Mahlzeit hinzu!")
+        st.markdown("""
+        <div style='background: #f9fafb; padding: 2rem; border-radius: 12px; text-align: center; border: 1px dashed #d1d5db;'>
+            <p style='color: #9ca3af; margin: 0; font-size: 0.95rem;'>No meals logged today</p>
+            <p style='color: #d1d5db; margin: 0.25rem 0 0 0; font-size: 0.85rem;'>Add your first meal above</p>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         for meal in today_meals:
             col1, col2, col3 = st.columns([1, 3, 1])
 
             with col1:
-                st.image(meal['image'], use_container_width=True)
+                st.image(meal['image'], width=80)
 
             with col2:
-                st.markdown(f"**{meal['foodName']}**")
-                st.markdown(f"🔥 **{meal['calories']} kcal**")
-                st.markdown(f"<small>{meal['portionSize']}</small>", unsafe_allow_html=True)
-                st.markdown(f"<small>P: {meal['protein']}g • C: {meal['carbs']}g • F: {meal['fat']}g</small>",
-                            unsafe_allow_html=True)
+                st.markdown(f"<p style='font-weight: 600; margin: 0; color: #111827;'>{meal['foodName']}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: #10b981; font-weight: 600; font-size: 1.05rem; margin: 0.25rem 0;'>{meal['calories']} kcal</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='color: #9ca3af; font-size: 0.85rem; margin: 0;'>{meal['portionSize']}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='font-size: 0.85rem; color: #6b7280; margin: 0.25rem 0 0 0;'>P: {meal['protein']}g • C: {meal['carbs']}g • F: {meal['fat']}g</p>", unsafe_allow_html=True)
 
             with col3:
-                if st.button("🗑️", key=f"del_{meal['id']}"):
+                if st.button("Delete", key=f"del_{meal['id']}", type="secondary"):
                     st.session_state.meals = [m for m in st.session_state.meals if m['id'] != meal['id']]
                     st.rerun()
 
-# ==================== STATISTIKEN TAB ====================
+# ==================== ANALYTICS TAB ====================
 with tab2:
-    st.markdown("### 📈 Wöchliche Kalorien")
+    st.markdown("### Weekly Overview")
 
     weekly_data = get_weekly_data()
 
@@ -382,104 +436,109 @@ with tab2:
         y=[d['calories'] for d in weekly_data],
         mode='lines+markers',
         line=dict(color='#10b981', width=3),
-        marker=dict(size=10, color='#10b981'),
+        marker=dict(size=8, color='#10b981'),
         fill='tozeroy',
         fillcolor='rgba(16, 185, 129, 0.1)'
     ))
 
     fig.update_layout(
-        height=300,
-        margin=dict(l=0, r=0, t=0, b=0),
+        height=280,
+        margin=dict(l=0, r=0, t=10, b=0),
         xaxis_title="",
-        yaxis_title="Kalorien",
+        yaxis_title="Calories",
         plot_bgcolor='white',
-        paper_bgcolor='white'
+        paper_bgcolor='white',
+        font=dict(family='Inter', size=12)
     )
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # Makronährstoffe Verteilung
-    st.markdown("### 🥧 Makronährstoffe Heute")
+    # Macros Distribution
+    st.markdown("### Macronutrient Distribution")
 
     if totals['count'] > 0:
         fig = go.Figure(data=[go.Pie(
-            labels=['Protein', 'Kohlenhydrate', 'Fett'],
+            labels=['Protein', 'Carbohydrates', 'Fat'],
             values=[totals['protein'], totals['carbs'], totals['fat']],
-            hole=.4,
-            marker=dict(colors=['#3b82f6', '#10b981', '#f59e0b'])
+            hole=.45,
+            marker=dict(colors=['#3b82f6', '#10b981', '#f59e0b']),
+            textfont=dict(family='Inter', size=13)
         )])
 
         fig.update_layout(
-            height=300,
-            margin=dict(l=0, r=0, t=0, b=0),
-            showlegend=True
+            height=280,
+            margin=dict(l=0, r=0, t=10, b=0),
+            showlegend=True,
+            font=dict(family='Inter', size=12)
         )
 
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("Noch keine Daten für heute")
+        st.info("No data available for today")
 
     # Summary Stats
-    st.markdown("### 📊 Zusammenfassung")
+    st.markdown("### Summary")
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown(f"""
-        <div class='metric-card' style='background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%); color: white;'>
-            <p style='opacity: 0.9; margin: 0;'>Gesamt Mahlzeiten</p>
-            <h1 style='margin: 0.5rem 0;'>{len(st.session_state.meals)}</h1>
+        <div class='metric-card' style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none;'>
+            <p style='opacity: 0.9; margin: 0; font-size: 0.875rem; font-weight: 500;'>Total Meals</p>
+            <h1 style='margin: 0.5rem 0 0 0; font-size: 2.5rem; font-weight: 700;'>{len(st.session_state.meals)}</h1>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div class='metric-card' style='background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); color: white;'>
-            <p style='opacity: 0.9; margin: 0;'>Heute</p>
-            <h1 style='margin: 0.5rem 0;'>{totals['count']}</h1>
+        <div class='metric-card' style='background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none;'>
+            <p style='opacity: 0.9; margin: 0; font-size: 0.875rem; font-weight: 500;'>Today</p>
+            <h1 style='margin: 0.5rem 0 0 0; font-size: 2.5rem; font-weight: 700;'>{totals['count']}</h1>
         </div>
         """, unsafe_allow_html=True)
 
-# ==================== EINSTELLUNGEN TAB ====================
+# ==================== SETTINGS TAB ====================
 with tab3:
-    st.markdown("### ⚙️ Kalorienziel")
+    st.markdown("### Daily Calorie Goal")
 
     new_goal = st.number_input(
-        "Tägliches Kalorienziel",
+        "Target calories per day",
         min_value=1000,
         max_value=5000,
         value=st.session_state.daily_goal,
         step=100
     )
 
-    if st.button("💾 Ziel speichern"):
+    if st.button("Save Goal"):
         st.session_state.daily_goal = new_goal
-        st.success("Ziel gespeichert!")
+        st.success("Goal saved successfully")
 
     st.markdown("---")
 
-    st.markdown("### 🗑️ Daten löschen")
-    st.warning("Alle gespeicherten Mahlzeiten werden gelöscht.")
+    st.markdown("### Data Management")
+    st.warning("All saved meals will be permanently deleted")
 
-    if st.button("Alle Daten löschen", type="secondary"):
+    if st.button("Delete All Data", type="secondary"):
         st.session_state.meals = []
-        st.success("Daten gelöscht!")
+        st.success("Data deleted successfully")
         st.rerun()
 
     st.markdown("---")
 
-    st.markdown("### ℹ️ Über die App")
-    st.info("""
-    **CalorieSnap** - KI-basierte Kalorienzähl-App
-
-    Mache einfach ein Foto von deinem Essen und die App schätzt automatisch die Nährwerte.
-
-    Version 1.0 • Streamlit PWA
-    """)
+    st.markdown("### About")
+    st.markdown("""
+    <div style='background: #f9fafb; padding: 1.5rem; border-radius: 12px; border: 1px solid #e5e7eb;'>
+        <p style='margin: 0; color: #374151; font-size: 0.95rem; line-height: 1.6;'>
+            <strong style='color: #111827;'>CalorieSnap</strong> - AI-powered nutrition tracking app with automatic food recognition.
+            Simply take a photo of your meal and let AI estimate the nutritional values.
+        </p>
+        <p style='margin: 1rem 0 0 0; color: #9ca3af; font-size: 0.85rem;'>Version 1.0</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ==================== FOOTER ====================
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #6b7280; font-size: 0.8rem; padding: 1rem;'>
-    Made with ❤️ using Streamlit & Claude AI
+<div style='text-align: center; color: #9ca3af; font-size: 0.85rem; padding: 1rem 0;'>
+    Powered by Streamlit & Claude AI
 </div>
 """, unsafe_allow_html=True)
