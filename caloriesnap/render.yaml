@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: caloriesnap
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && reflex init
+    startCommand: reflex run --env prod --backend-only
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
