@@ -3,11 +3,14 @@ services:
     name: caloriesnap
     runtime: python
     plan: free
-    rootDir: caloriesnap
-    buildCommand: pip install -r requirements.txt && reflex init
-    startCommand: reflex run --env prod --backend-only --host 0.0.0.0 --port 10000
+    buildCommand: |
+      pip install -r requirements.txt
+      reflex init
+      reflex export --frontend-only --no-zip
+    startCommand: reflex run --env prod --backend-host 0.0.0.0 --backend-port 10000
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: "3.11"
       - key: PORT
-        value: 10000
+        value: "10000"
+    healthCheckPath: /

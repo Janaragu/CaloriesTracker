@@ -4,7 +4,7 @@ Handles user profile data and fitness calculations
 """
 
 import reflex as rx
-from .auth import supabase, AuthState
+from caloriesnap.states.auth import supabase, AuthState
 
 
 class ProfileState(rx.State):
@@ -21,11 +21,12 @@ class ProfileState(rx.State):
     
     def load_profile(self):
         """Load user profile from database"""
-        if not AuthState.user_id:
+        auth_state = self.get_state(AuthState)
+        if not auth_state.user_id or not supabase:
             return
         
         try:
-            response = supabase.table("users").select("*").eq("user_id", AuthState.user_id).execute()
+            response = supabase.table("users").select("*").eq("user_id", auth_state.user_id).execute()
             
             if response.data:
                 profile = response.data[0]
@@ -40,7 +41,7 @@ class ProfileState(rx.State):
         except Exception as e:
             print(f"Error loading profile: {e}")
     
-    def calculate_bmr(self, weight: float, height: float, age: int, gender: str) -> float:
+    def _calculate_bmr(self, weight: float, height: float, age: int, gender: str) -> float:
         """Calculate Basal Metabolic Rate (Mifflin-St Jeor)"""
         if gender == "male":
             bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
@@ -48,7 +49,7 @@ class ProfileState(rx.State):
             bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
         return bmr
     
-    def calculate_tdee(self, bmr: float, activity_level: str) -> float:
+    def _calculate_tdee(self, bmr: float, activity_level: str) -> float:
         """Calculate Total Daily Energy Expenditure"""
         activity_multipliers = {
             "sedentary": 1.2,
@@ -59,7 +60,7 @@ class ProfileState(rx.State):
         }
         return bmr * activity_multipliers.get(activity_level, 1.55)
     
-    def calculate_calorie_goal(self, tdee: float, goal: str) -> int:
+    def _calculate_calorie_goal(self, tdee: float, goal: str) -> int:
         """Calculate daily calorie goal based on fitness goal"""
         if goal == "lose":
             return int(tdee - 500)  # 500 kcal deficit
@@ -70,6 +71,10 @@ class ProfileState(rx.State):
     
     def update_profile(self, form_data: dict):
         """Update user profile"""
+        auth_state = self.get_state(AuthState)
+        if not supabase:
+            return rx.window_alert("Database connection not available")
+        
         try:
             # Parse form data
             weight = float(form_data.get("weight_kg", self.weight_kg))
@@ -80,9 +85,9 @@ class ProfileState(rx.State):
             goal = form_data.get("goal", self.goal)
             
             # Calculate new calorie goal
-            bmr = self.calculate_bmr(weight, height, age, gender)
-            tdee = self.calculate_tdee(bmr, activity)
-            new_calorie_goal = self.calculate_calorie_goal(tdee, goal)
+            bmr = self._calculate_bmr(weight, height, age, gender)
+            tdee = self._calculate_tdee(bmr, activity)
+            new_calorie_goal = self._calculate_calorie_goal(tdee, goal)
             
             # Update database
             supabase.table("users").update({
@@ -93,7 +98,7 @@ class ProfileState(rx.State):
                 "activity_level": activity,
                 "goal": goal,
                 "daily_calorie_goal": new_calorie_goal
-            }).eq("user_id", AuthState.user_id).execute()
+            }).eq("user_id", auth_state.user_id).execute()
             
             # Update local state
             self.weight_kg = weight
@@ -112,9 +117,25 @@ class ProfileState(rx.State):
     @rx.var
     def bmr(self) -> int:
         """Current BMR"""
-        return int(self.calculate_bmr(self.weight_kg, self.height_cm, self.age, self.gender))
+        return int(self._calculate_bmr(self.weight_kg, self.height_cm, self.age, self.gender))
     
     @rx.var
     def tdee(self) -> int:
         """Current TDEE"""
-        return int(self.calculate_tdee(self.bmr, self.activity_level))
+        bmr_value = self._calculate_bmr(self.weight_kg, self.height_cm, self.age, self.gender)
+        return int(self._calculate_tdee(bmr_value, self.activity_level))
+    
+    @rx.var
+    def calorie_goal_display(self) -> str:
+        """Display calorie goal"""
+        return f"{self.daily_calorie_goal} kcal"
+    
+    @rx.var
+    def bmr_display(self) -> str:
+        """Display BMR"""
+        return f"{self.bmr} kcal"
+    
+    @rx.var
+    def tdee_display(self) -> str:
+        """Display TDEE"""
+        return f"{self.tdee} kcal"

@@ -3,7 +3,7 @@ components/navbar.py - Navigation Bar Component
 """
 
 import reflex as rx
-from states.auth import AuthState
+from caloriesnap.states.auth import AuthState
 
 
 def navbar() -> rx.Component:
@@ -29,7 +29,7 @@ def navbar() -> rx.Component:
                 # Logged in - show user email and logout
                 rx.hstack(
                     rx.text(
-                        f"👋 {AuthState.user_email}",
+                        AuthState.welcome_text,
                         color="gray.700",
                         font_weight="500"
                     ),

@@ -4,10 +4,11 @@ Complete dashboard with Overview, Add Meal, and Settings tabs
 """
 
 import reflex as rx
-from components import navbar
-from components.cards import stat_card, meal_card, info_card
-from states.profile import ProfileState
-from states.meals import MealState
+from caloriesnap.components.navbar import navbar
+from caloriesnap.components.cards import stat_card, meal_card, info_card
+from caloriesnap.states.auth import AuthState
+from caloriesnap.states.profile import ProfileState
+from caloriesnap.states.meals import MealState
 
 
 def overview_tab() -> rx.Component:
@@ -18,10 +19,10 @@ def overview_tab() -> rx.Component:
         
         # Stats Grid
         rx.grid(
-            stat_card("Calories", f"{MealState.today_calories} / {ProfileState.daily_calorie_goal}", "green"),
-            stat_card("Protein", f"{MealState.today_protein}g", "blue"),
-            stat_card("Carbs", f"{MealState.today_carbs}g", "purple"),
-            stat_card("Fat", f"{MealState.today_fat}g", "orange"),
+            stat_card("Calories", MealState.calories_display, "green"),
+            stat_card("Protein", MealState.protein_display, "blue"),
+            stat_card("Carbs", MealState.carbs_display, "purple"),
+            stat_card("Fat", MealState.fat_display, "orange"),
             columns=rx.breakpoints(initial="1", sm="2", lg="4"),
             spacing="4",
             margin_bottom="8",
@@ -32,7 +33,7 @@ def overview_tab() -> rx.Component:
         rx.heading("Today's Meals", size="6", font_weight="600", margin_bottom="4"),
         
         rx.cond(
-            MealState.today_meals,
+            MealState.has_today_meals,
             rx.vstack(
                 rx.foreach(MealState.today_meals, meal_card),
                 spacing="2",
@@ -60,7 +61,7 @@ def add_meal_tab() -> rx.Component:
         
         # API Key Input
         rx.cond(
-            MealState.anthropic_api_key == "",
+            ~MealState.has_api_key,
             rx.card(
                 rx.vstack(
                     rx.text("Enter your Anthropic API Key:", font_weight="600", size="3"),
@@ -75,7 +76,8 @@ def add_meal_tab() -> rx.Component:
                         "Get API key at console.anthropic.com →",
                         href="https://console.anthropic.com",
                         color="green.600",
-                        size="2"
+                        size="2",
+                        is_external=True
                     ),
                     spacing="3",
                     width="100%"
@@ -141,7 +143,7 @@ def add_meal_tab() -> rx.Component:
         
         # Analysis Results
         rx.cond(
-            MealState.analyzed_food,
+            MealState.has_analyzed_food,
             rx.card(
                 rx.vstack(
                     rx.heading("Analysis Results", size="5", font_weight="600", color="green.600"),
@@ -149,22 +151,22 @@ def add_meal_tab() -> rx.Component:
                     rx.divider(),
                     
                     rx.vstack(
-                        rx.heading(MealState.analyzed_food["foodName"], size="7", font_weight="700"),
+                        rx.heading(MealState.analyzed_food_name, size="7", font_weight="700"),
                         rx.heading(
-                            f"{MealState.analyzed_food['calories']} kcal",
+                            MealState.analyzed_calories,
                             size="8",
                             color="green.600",
                             font_weight="700"
                         ),
                         rx.text(
-                            f"Portion: {MealState.analyzed_food['portionSize']}",
+                            MealState.analyzed_portion,
                             color="gray.600",
                             size="3"
                         ),
                         rx.hstack(
-                            rx.badge(f"P: {MealState.analyzed_food['protein']}g", color_scheme="blue"),
-                            rx.badge(f"C: {MealState.analyzed_food['carbs']}g", color_scheme="purple"),
-                            rx.badge(f"F: {MealState.analyzed_food['fat']}g", color_scheme="orange"),
+                            rx.badge(MealState.analyzed_protein, color_scheme="blue"),
+                            rx.badge(MealState.analyzed_carbs, color_scheme="purple"),
+                            rx.badge(MealState.analyzed_fat, color_scheme="orange"),
                             spacing="2"
                         ),
                         spacing="3",
@@ -327,9 +329,9 @@ def settings_tab() -> rx.Component:
         
         # Current Goals Display
         rx.grid(
-            info_card("Daily Calorie Goal", f"{ProfileState.daily_calorie_goal} kcal", "Automatically calculated"),
-            info_card("BMR", f"{ProfileState.bmr} kcal", "Basal Metabolic Rate"),
-            info_card("TDEE", f"{ProfileState.tdee} kcal", "Total Daily Energy"),
+            info_card("Daily Calorie Goal", ProfileState.calorie_goal_display, "Automatically calculated"),
+            info_card("BMR", ProfileState.bmr_display, "Basal Metabolic Rate"),
+            info_card("TDEE", ProfileState.tdee_display, "Total Daily Energy"),
             columns=rx.breakpoints(initial="1", sm="3"),
             spacing="4",
             width="100%",
@@ -347,18 +349,16 @@ def dashboard_page() -> rx.Component:
         navbar(),
         
         rx.container(
-            rx.tabs(
-                rx.tab_list(
-                    rx.tab("Overview", value="overview"),
-                    rx.tab("Add Meal", value="add_meal"),
-                    rx.tab("Settings", value="settings"),
+            rx.tabs.root(
+                rx.tabs.list(
+                    rx.tabs.trigger("Overview", value="overview"),
+                    rx.tabs.trigger("Add Meal", value="add_meal"),
+                    rx.tabs.trigger("Settings", value="settings"),
                 ),
                 
-                rx.tab_panels(
-                    rx.tab_panel(overview_tab(), value="overview"),
-                    rx.tab_panel(add_meal_tab(), value="add_meal"),
-                    rx.tab_panel(settings_tab(), value="settings"),
-                ),
+                rx.tabs.content(overview_tab(), value="overview"),
+                rx.tabs.content(add_meal_tab(), value="add_meal"),
+                rx.tabs.content(settings_tab(), value="settings"),
                 
                 default_value="overview",
                 margin_top="6"

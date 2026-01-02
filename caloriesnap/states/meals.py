@@ -5,11 +5,17 @@ Handles meal tracking, AI food analysis, and meal CRUD
 
 import reflex as rx
 from typing import List, Dict, Optional
-import anthropic
 import base64
 import json
 from datetime import datetime
-from .auth import supabase, AuthState
+from caloriesnap.states.auth import supabase, AuthState
+
+# Try to import anthropic
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
 
 
 class MealState(rx.State):
@@ -26,13 +32,14 @@ class MealState(rx.State):
     
     def load_meals(self):
         """Load user's meals from database"""
-        if not AuthState.user_id:
+        auth_state = self.get_state(AuthState)
+        if not auth_state.user_id or not supabase:
             return
         
         try:
             # All meals (last 50)
             response = supabase.table("meals").select("*").eq(
-                "user_id", AuthState.user_id
+                "user_id", auth_state.user_id
             ).order("created_at", desc=True).limit(50).execute()
             
             self.meals = response.data if response.data else []
@@ -40,7 +47,7 @@ class MealState(rx.State):
             # Today's meals
             today = datetime.now().date().isoformat()
             today_response = supabase.table("meals").select("*").eq(
-                "user_id", AuthState.user_id
+                "user_id", auth_state.user_id
             ).gte("created_at", today).execute()
             
             self.today_meals = today_response.data if today_response.data else []
@@ -53,12 +60,18 @@ class MealState(rx.State):
     async def analyze_food(self, files: List[rx.UploadFile]):
         """Analyze food image with Claude Vision API"""
         
+        if not ANTHROPIC_AVAILABLE:
+            yield rx.window_alert("Anthropic library not available")
+            return
+        
         # Validation
         if not files:
-            return rx.window_alert("Please upload an image")
+            yield rx.window_alert("Please upload an image")
+            return
         
         if not self.anthropic_api_key:
-            return rx.window_alert("Please enter your Anthropic API key first")
+            yield rx.window_alert("Please enter your Anthropic API key first")
+            return
         
         self.analyzing = True
         yield
@@ -68,6 +81,17 @@ class MealState(rx.State):
             file = files[0]
             image_data = await file.read()
             base64_image = base64.b64encode(image_data).decode('utf-8')
+            
+            # Determine media type
+            filename = file.filename.lower() if file.filename else ""
+            if filename.endswith(".png"):
+                media_type = "image/png"
+            elif filename.endswith(".gif"):
+                media_type = "image/gif"
+            elif filename.endswith(".webp"):
+                media_type = "image/webp"
+            else:
+                media_type = "image/jpeg"
             
             # Call Claude Vision API
             client = anthropic.Anthropic(api_key=self.anthropic_api_key)
@@ -83,7 +107,7 @@ class MealState(rx.State):
                                 "type": "image",
                                 "source": {
                                     "type": "base64",
-                                    "media_type": "image/jpeg",
+                                    "media_type": media_type,
                                     "data": base64_image
                                 }
                             },
@@ -125,16 +149,21 @@ Estimate values as accurately as possible based on the image."""
     
     def save_meal(self):
         """Save analyzed meal to database"""
+        auth_state = self.get_state(AuthState)
+        
         if not self.analyzed_food:
             return rx.window_alert("No food data to save")
         
-        if not AuthState.user_id:
+        if not auth_state.user_id:
             return rx.window_alert("Please login first")
+        
+        if not supabase:
+            return rx.window_alert("Database connection not available")
         
         try:
             # Insert into database
             supabase.table("meals").insert({
-                "user_id": AuthState.user_id,
+                "user_id": auth_state.user_id,
                 "food_name": self.analyzed_food["foodName"],
                 "calories": int(self.analyzed_food["calories"]),
                 "protein": float(self.analyzed_food["protein"]),
@@ -158,6 +187,9 @@ Estimate values as accurately as possible based on the image."""
     
     def delete_meal(self, meal_id: int):
         """Delete a meal"""
+        if not supabase:
+            return rx.window_alert("Database connection not available")
+        
         try:
             supabase.table("meals").delete().eq("id", meal_id).execute()
             self.load_meals()
@@ -199,3 +231,68 @@ Estimate values as accurately as possible based on the image."""
     def total_meal_count(self) -> int:
         """Total number of meals"""
         return len(self.meals)
+    
+    @rx.var
+    def calories_display(self) -> str:
+        """Display calories for stats"""
+        return f"{self.today_calories}"
+    
+    @rx.var
+    def protein_display(self) -> str:
+        """Display protein"""
+        return f"{self.today_protein}g"
+    
+    @rx.var
+    def carbs_display(self) -> str:
+        """Display carbs"""
+        return f"{self.today_carbs}g"
+    
+    @rx.var
+    def fat_display(self) -> str:
+        """Display fat"""
+        return f"{self.today_fat}g"
+    
+    @rx.var
+    def has_analyzed_food(self) -> bool:
+        """Check if there's analyzed food"""
+        return self.analyzed_food is not None
+    
+    @rx.var
+    def analyzed_food_name(self) -> str:
+        """Get analyzed food name"""
+        return self.analyzed_food.get("foodName", "") if self.analyzed_food else ""
+    
+    @rx.var
+    def analyzed_calories(self) -> str:
+        """Get analyzed calories"""
+        return f"{self.analyzed_food.get('calories', 0)} kcal" if self.analyzed_food else ""
+    
+    @rx.var
+    def analyzed_portion(self) -> str:
+        """Get analyzed portion"""
+        return f"Portion: {self.analyzed_food.get('portionSize', '')}" if self.analyzed_food else ""
+    
+    @rx.var
+    def analyzed_protein(self) -> str:
+        """Get analyzed protein"""
+        return f"P: {self.analyzed_food.get('protein', 0)}g" if self.analyzed_food else ""
+    
+    @rx.var
+    def analyzed_carbs(self) -> str:
+        """Get analyzed carbs"""
+        return f"C: {self.analyzed_food.get('carbs', 0)}g" if self.analyzed_food else ""
+    
+    @rx.var
+    def analyzed_fat(self) -> str:
+        """Get analyzed fat"""
+        return f"F: {self.analyzed_food.get('fat', 0)}g" if self.analyzed_food else ""
+    
+    @rx.var
+    def has_api_key(self) -> bool:
+        """Check if API key is set"""
+        return self.anthropic_api_key != ""
+    
+    @rx.var
+    def has_today_meals(self) -> bool:
+        """Check if there are meals today"""
+        return len(self.today_meals) > 0

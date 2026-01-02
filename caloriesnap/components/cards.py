@@ -3,10 +3,9 @@ components/cards.py - Reusable Card Components
 """
 
 import reflex as rx
-from typing import Dict
 
 
-def stat_card(label: str, value: str, color: str = "green") -> rx.Component:
+def stat_card(label: str, value: rx.Var, color: str = "green") -> rx.Component:
     """Statistics card component"""
     return rx.card(
         rx.vstack(
@@ -33,32 +32,32 @@ def stat_card(label: str, value: str, color: str = "green") -> rx.Component:
     )
 
 
-def meal_card(meal: Dict) -> rx.Component:
+def meal_card(meal: dict) -> rx.Component:
     """Meal card component"""
-    from ..states.meals import MealState
+    from caloriesnap.states.meals import MealState
     
     return rx.card(
         rx.hstack(
             # Meal info
             rx.vstack(
                 rx.heading(
-                    meal.get("food_name", "Unknown"),
+                    meal["food_name"],
                     size="5",
                     font_weight="600"
                 ),
                 rx.text(
-                    f"{meal.get('calories', 0)} kcal",
+                    f"{meal['calories']} kcal",
                     color="green.600",
                     font_weight="600",
                     size="4"
                 ),
                 rx.text(
-                    meal.get("portion_size", ""),
+                    meal["portion_size"],
                     color="gray.500",
                     size="2"
                 ),
                 rx.text(
-                    f"P: {meal.get('protein', 0)}g • C: {meal.get('carbs', 0)}g • F: {meal.get('fat', 0)}g",
+                    f"P: {meal['protein']}g • C: {meal['carbs']}g • F: {meal['fat']}g",
                     color="gray.600",
                     size="2"
                 ),
@@ -124,7 +123,7 @@ def feature_card(icon: str, title: str, description: str) -> rx.Component:
     )
 
 
-def info_card(title: str, value: str, description: str = "") -> rx.Component:
+def info_card(title: str, value: rx.Var, description: str = "") -> rx.Component:
     """Information card component"""
     return rx.card(
         rx.vstack(
