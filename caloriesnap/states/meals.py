@@ -30,6 +30,10 @@ class MealState(rx.State):
     analyzed_food: Optional[Dict] = None
     anthropic_api_key: str = ""
     
+    def set_anthropic_api_key(self, value: str):
+        """Set the Anthropic API key"""
+        self.anthropic_api_key = value
+    
     def load_meals(self):
         """Load user's meals from database"""
         auth_state = self.get_state(AuthState)

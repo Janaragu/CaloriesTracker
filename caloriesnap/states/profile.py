@@ -139,3 +139,18 @@ class ProfileState(rx.State):
     def tdee_display(self) -> str:
         """Display TDEE"""
         return f"{self.tdee} kcal"
+    
+    @rx.var
+    def weight_kg_str(self) -> str:
+        """Weight as string for input"""
+        return str(self.weight_kg)
+    
+    @rx.var
+    def height_cm_str(self) -> str:
+        """Height as string for input"""
+        return str(self.height_cm)
+    
+    @rx.var
+    def age_str(self) -> str:
+        """Age as string for input"""
+        return str(self.age)

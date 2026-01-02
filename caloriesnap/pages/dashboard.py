@@ -226,7 +226,7 @@ def settings_tab() -> rx.Component:
                                 placeholder="70",
                                 name="weight_kg",
                                 type="number",
-                                default_value=ProfileState.weight_kg,
+                                default_value=ProfileState.weight_kg_str,
                                 size="3"
                             ),
                             spacing="1",
@@ -239,7 +239,7 @@ def settings_tab() -> rx.Component:
                                 placeholder="170",
                                 name="height_cm",
                                 type="number",
-                                default_value=ProfileState.height_cm,
+                                default_value=ProfileState.height_cm_str,
                                 size="3"
                             ),
                             spacing="1",
@@ -252,7 +252,7 @@ def settings_tab() -> rx.Component:
                                 placeholder="25",
                                 name="age",
                                 type="number",
-                                default_value=ProfileState.age,
+                                default_value=ProfileState.age_str,
                                 size="3"
                             ),
                             spacing="1",
