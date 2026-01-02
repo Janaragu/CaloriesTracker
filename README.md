@@ -193,7 +193,7 @@ def analytics_page() -> rx.Component:
         rx.heading("Analytics")
     )
 
-# In caloriesnap.py registrieren:
+# In app.py registrieren:
 app.add_page(analytics_page, route="/analytics")
 ```
 

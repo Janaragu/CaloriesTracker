@@ -1,5 +1,5 @@
 """
-caloriesnap.py - Main Application File
+app.py - Main Application File
 CalorieSnap - AI-Powered Nutrition Tracking
 
 Modular structure:
