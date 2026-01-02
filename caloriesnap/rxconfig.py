@@ -1,6 +1,6 @@
 import reflex as rx
 
 config = rx.Config(
-    app_name="caloriesnap.caloriesnap",
+    app_name="app",
     db_url="sqlite:///reflex.db",
 )
