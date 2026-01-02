@@ -16,7 +16,7 @@ CalorieSnap - AI-Powered Nutrition Tracking
 import reflex as rx
 
 # Import pages - OHNE "caloriesnap." Prefix
-from pages.landing import landing_page
+from pages import landing_page
 from pages.auth import login_page, signup_page
 from pages.dashboard import dashboard_page
 

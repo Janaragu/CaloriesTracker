@@ -3,8 +3,8 @@ pages/auth.py - Authentication Pages (Login & Signup)
 """
 
 import reflex as rx
-from ..components.navbar import navbar
-from ..states.auth import AuthState
+from components import navbar
+from states.auth import AuthState
 
 
 def login_page() -> rx.Component:

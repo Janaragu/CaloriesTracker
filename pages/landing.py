@@ -3,8 +3,8 @@ pages/landing.py - Landing Page
 """
 
 import reflex as rx
-from ..components.navbar import navbar
-from ..components.cards import feature_card
+from components import navbar
+from components.cards import feature_card
 
 
 def landing_page() -> rx.Component:

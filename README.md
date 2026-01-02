@@ -202,22 +202,25 @@ app.add_page(analytics_page, route="/analytics")
 ## 📦 Import-Structure
 
 ### States importieren
+
 ```python
-from caloriesnap.states.auth import AuthState
-from caloriesnap.states.profile import ProfileState
-from caloriesnap.states.meals import MealState
+from states.auth import AuthState
+from states import ProfileState
+from states.meals import MealState
 ```
 
 ### Components importieren
+
 ```python
-from caloriesnap.components.navbar import navbar
-from caloriesnap.components.cards import stat_card, meal_card
+from components.navbar import navbar
+from components import stat_card, meal_card
 ```
 
 ### Pages importieren
+
 ```python
-from caloriesnap.pages.landing import landing_page
-from caloriesnap.pages.dashboard import dashboard_page
+from pages import landing_page
+from pages.dashboard import dashboard_page
 ```
 
 ---

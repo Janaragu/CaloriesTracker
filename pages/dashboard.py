@@ -4,11 +4,10 @@ Complete dashboard with Overview, Add Meal, and Settings tabs
 """
 
 import reflex as rx
-from ..components.navbar import navbar
-from ..components.cards import stat_card, meal_card, info_card
-from ..states.auth import AuthState
-from ..states.profile import ProfileState
-from ..states.meals import MealState
+from components import navbar
+from components.cards import stat_card, meal_card, info_card
+from states.profile import ProfileState
+from states.meals import MealState
 
 
 def overview_tab() -> rx.Component:

@@ -3,7 +3,7 @@ components/navbar.py - Navigation Bar Component
 """
 
 import reflex as rx
-from ..states.auth import AuthState
+from states.auth import AuthState
 
 
 def navbar() -> rx.Component:
