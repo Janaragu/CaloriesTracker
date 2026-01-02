@@ -8,12 +8,17 @@ Modular structure:
 - pages/ - Page components
 """
 
+"""
+app.py - Main Application File
+CalorieSnap - AI-Powered Nutrition Tracking
+"""
+
 import reflex as rx
 
-# Import pages
-from caloriesnap.pages.landing import landing_page
-from caloriesnap.pages.auth import login_page, signup_page
-from caloriesnap.pages.dashboard import dashboard_page
+# Import pages - OHNE "caloriesnap." Prefix
+from pages.landing import landing_page
+from pages.auth import login_page, signup_page
+from pages.dashboard import dashboard_page
 
 
 # ==================== APP CONFIGURATION ====================
@@ -33,7 +38,6 @@ app = rx.App(
 
 # ==================== ROUTES ====================
 
-# Landing Page
 app.add_page(
     landing_page,
     route="/",
@@ -41,7 +45,6 @@ app.add_page(
     description="Track your nutrition with AI-powered food recognition"
 )
 
-# Auth Pages
 app.add_page(
     login_page,
     route="/login",
@@ -54,7 +57,6 @@ app.add_page(
     title="Sign Up - CalorieSnap"
 )
 
-# Dashboard (Protected)
 app.add_page(
     dashboard_page,
     route="/dashboard",
