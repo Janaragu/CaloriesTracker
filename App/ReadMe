@@ -1,0 +1,236 @@
+# 🍽️ CalorieSnap - KI Kalorienzähl-App
+
+Mobile-optimierte Python/Streamlit App mit KI-basierter Bilderkennung für Essen.
+
+## 📱 Features
+
+- ✅ Foto-Upload & Kamera-Integration
+- ✅ KI-basierte Essen-Erkennung (Claude Vision API)
+- ✅ Automatische Kalorien- & Nährwertberechnung
+- ✅ Tägliches Tracking mit Fortschrittsbalken
+- ✅ Wöchliche Statistiken & Diagramme
+- ✅ Makronährstoffe Visualisierung
+- ✅ Datenspeicherung (Session State)
+- ✅ Mobile-optimiertes Design
+
+---
+
+## 🚀 Installation & Setup in PyCharm
+
+### 1. Projekt in PyCharm öffnen
+```bash
+# Ordner in PyCharm öffnen: File -> Open -> CalorieSnap Ordner wählen
+```
+
+### 2. Virtual Environment erstellen
+```bash
+# In PyCharm Terminal (unten):
+python -m venv venv
+
+# Aktivieren:
+# Windows:
+venv\Scripts\activate
+
+# Mac/Linux:
+source venv/bin/activate
+```
+
+### 3. Dependencies installieren
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Anthropic API Key holen
+1. Gehe zu: https://console.anthropic.com
+2. Account erstellen (kostenlos)
+3. API Key erstellen
+4. Key kopieren (brauchst du beim ersten Start der App)
+
+---
+
+## ▶️ App starten
+
+### In PyCharm Terminal:
+```bash
+streamlit run app.py
+```
+
+Die App öffnet sich automatisch im Browser unter: **http://localhost:8501**
+
+---
+
+## 📱 Auf Mobile Device testen
+
+### Option 1: Lokales Netzwerk
+```bash
+# Streamlit auf allen Netzwerk-Interfaces starten:
+streamlit run app.py --server.address 0.0.0.0
+
+# Auf Handy öffnen:
+http://<DEIN-PC-IP>:8501
+
+# IP herausfinden:
+# Windows: ipconfig
+# Mac/Linux: ifconfig
+```
+
+### Option 2: ngrok (Öffentlicher Zugang)
+```bash
+# ngrok installieren: https://ngrok.com/download
+
+# In separatem Terminal:
+ngrok http 8501
+
+# ngrok gibt dir eine URL wie: https://abc123.ngrok.io
+# Diese URL kannst du auf jedem Gerät öffnen!
+```
+
+---
+
+## 🌐 Als echte Mobile PWA deployen
+
+### Option 1: Streamlit Cloud (Kostenlos & Einfach) ⭐
+```bash
+1. Code auf GitHub hochladen
+2. Zu https://streamlit.io/cloud gehen
+3. "New app" -> GitHub Repo verbinden
+4. Deployed!
+5. Bekommst URL wie: https://deine-app.streamlit.app
+```
+
+**Vorteile:**
+- Komplett kostenlos
+- Automatische Updates bei Git Push
+- HTTPS (wichtig für Kamera-Zugriff)
+- Auf jedem Gerät nutzbar
+
+### Option 2: Heroku (Fortgeschritten)
+```bash
+# Procfile erstellen:
+web: streamlit run app.py --server.port=$PORT
+
+# Deployen:
+heroku create caloriesnap
+git push heroku main
+```
+
+### Option 3: AWS/Google Cloud (Professionell)
+- EC2 / Cloud Run verwenden
+- Nginx als Reverse Proxy
+- SSL Zertifikat für HTTPS
+
+---
+
+## 🔧 PyCharm Tipps
+
+### Run Configuration erstellen:
+```
+1. Run -> Edit Configurations
+2. + (Add) -> Python
+3. Script path: venv/Scripts/streamlit (oder venv/bin/streamlit)
+4. Parameters: run app.py
+5. Speichern
+6. Jetzt mit ▶️ Button starten!
+```
+
+### Python Interpreter setzen:
+```
+1. File -> Settings -> Project -> Python Interpreter
+2. Zahnrad ⚙️ -> Add Interpreter
+3. Existing environment -> venv/Scripts/python.exe wählen
+```
+
+---
+
+## 📝 Code-Struktur
+
+```
+CalorieSnap/
+├── app.py                 # Haupt-App (hier bearbeiten!)
+├── requirements.txt       # Python Dependencies
+├── README.md             # Diese Datei
+└── .streamlit/           # Streamlit Config (optional)
+    └── config.toml
+```
+
+---
+
+## 🎨 Anpassungen
+
+### Farben ändern:
+In `app.py` nach `st.markdown("""<style>` suchen und CSS bearbeiten
+
+### Features hinzufügen:
+- Barcode Scanner: `streamlit-ext` Package
+- Gewichtstracking: Einfach neue Tab erstellen
+- Rezepte speichern: Neue Session State Variable
+
+---
+
+## 🐛 Troubleshooting
+
+### Port schon belegt?
+```bash
+streamlit run app.py --server.port 8502
+```
+
+### API Key Fehler?
+```
+Stelle sicher, dass du den API Key in der App eingibst (beim ersten Start)
+```
+
+### Kamera funktioniert nicht?
+```
+Kamera braucht HTTPS! Nutze ngrok oder deploye auf Streamlit Cloud
+```
+
+### Mobile Layout kaputt?
+```bash
+# Cache löschen:
+streamlit cache clear
+```
+
+---
+
+## 📲 Als "echte" App installieren
+
+### Auf dem Handy (nach Deployment):
+1. App-URL im Browser öffnen
+2. Browser-Menü (⋮)
+3. "Zum Homescreen hinzufügen"
+4. Fertig! App erscheint wie normale App
+
+### PWA Manifest hinzufügen (optional):
+Erstelle `.streamlit/config.toml`:
+```toml
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+```
+
+---
+
+## 💡 Nächste Schritte
+
+- [ ] Deployment auf Streamlit Cloud
+- [ ] Barcode Scanner hinzufügen
+- [ ] Gewichtstracking Feature
+- [ ] Wasser-Tracking
+- [ ] Meal Planner
+- [ ] Social Features (Freunde, Challenges)
+- [ ] Export zu PDF/CSV
+
+---
+
+## 🆘 Support
+
+Bei Fragen oder Problemen:
+1. PyCharm Terminal: `streamlit --help`
+2. Streamlit Docs: https://docs.streamlit.io
+3. Anthropic Docs: https://docs.anthropic.com
+
+---
+
+**Viel Erfolg! 🚀**
