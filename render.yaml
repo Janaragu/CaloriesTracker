@@ -7,10 +7,10 @@ services:
       pip install -r requirements.txt
       reflex init
       reflex export --frontend-only --no-zip
-    startCommand: reflex run --env prod --backend-host 0.0.0.0 --backend-port 10000
+      rm -rf public
+      mv .web/_static public
+    startCommand: reflex run --env prod --backend-host 0.0.0.0 --backend-port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
-      - key: PORT
-        value: "10000"
-    healthCheckPath: /
+    staticPublishPath: ./public
