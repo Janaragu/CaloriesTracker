@@ -6,11 +6,7 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       reflex init
-      reflex export --frontend-only --no-zip
-      rm -rf public
-      mv .web/_static public
-    startCommand: reflex run --env prod --backend-host 0.0.0.0 --backend-port $PORT
+    startCommand: reflex run --env prod --frontend-port $PORT --backend-host 0.0.0.0
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
-    staticPublishPath: ./public
