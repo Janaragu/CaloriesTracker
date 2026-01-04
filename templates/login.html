@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Login - CalorieSnap{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-green-600 hover:text-green-700">CalorieSnap</a>
+        <div class="flex gap-3">
+            <a href="/login" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Login</a>
+            <a href="/signup" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Login Form -->
+<div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">Welcome Back</h1>
+            <p class="text-gray-600">Sign in to your account to continue</p>
+        </div>
+        
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Email" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+                >
+            </div>
+            <div>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Password" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+                >
+            </div>
+            <button 
+                type="submit" 
+                id="submitBtn"
+                class="w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+            >
+                Login
+            </button>
+        </form>
+        
+        <p class="text-center mt-6 text-gray-600">
+            Don't have an account? 
+            <a href="/signup" class="text-green-600 font-semibold hover:text-green-700">Sign up</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
+        
+        const result = await apiCall('/api/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            })
+        });
+        
+        if (result.success) {
+            window.location.href = result.redirect;
+        } else {
+            showAlert(result.error || 'Login failed', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Login';
+        }
+    });
+</script>
+{% endblock %}

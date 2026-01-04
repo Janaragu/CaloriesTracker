@@ -3,10 +3,10 @@ services:
     name: caloriesnap
     runtime: python
     plan: free
-    buildCommand: |
-      pip install -r requirements.txt
-      reflex init
-    startCommand: reflex run --env prod --frontend-port 10000 --backend-port 8000 --backend-host 0.0.0.0
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
+      - key: SECRET_KEY
+        generateValue: true
