@@ -5,303 +5,125 @@
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <a href="/" class="text-2xl font-bold text-green-600">🍎 CalorieSnap</a>
         <div class="flex items-center gap-4">
-            <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
-            </button>
-            <span class="text-gray-700 dark:text-gray-300 hidden sm:inline">👋 {{ user_email }}</span>
-            <a href="/logout" class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">Logout</a>
+            <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"><span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span></button>
+            <a href="/logout" class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">Logout</a>
         </div>
     </div>
 </nav>
-
 <div class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex gap-1 mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         <button onclick="showTab('overview')" id="tab-overview" class="tab-btn px-4 py-3 font-semibold text-green-600 border-b-2 border-green-600 whitespace-nowrap">📊 Overview</button>
-        <button onclick="showTab('add-meal')" id="tab-add-meal" class="tab-btn px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">➕ Add Meal</button>
-        <button onclick="showTab('stats')" id="tab-stats" class="tab-btn px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">📈 Statistics</button>
-        <button onclick="showTab('achievements')" id="tab-achievements" class="tab-btn px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">🏆 Achievements</button>
-        <button onclick="showTab('settings')" id="tab-settings" class="tab-btn px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">⚙️ Settings</button>
+        <button onclick="showTab('add-meal')" id="tab-add-meal" class="tab-btn px-4 py-3 font-semibold text-gray-500 whitespace-nowrap">📸 Add Meal</button>
+        <button onclick="showTab('recipes')" id="tab-recipes" class="tab-btn px-4 py-3 font-semibold text-gray-500 whitespace-nowrap">🍳 Recipes</button>
+        <button onclick="showTab('stats')" id="tab-stats" class="tab-btn px-4 py-3 font-semibold text-gray-500 whitespace-nowrap">📈 Stats</button>
+        <button onclick="showTab('settings')" id="tab-settings" class="tab-btn px-4 py-3 font-semibold text-gray-500 whitespace-nowrap">⚙️ Settings</button>
     </div>
-
-    <!-- OVERVIEW -->
     <div id="panel-overview" class="tab-panel">
         <div class="grid lg:grid-cols-3 gap-6 mb-8">
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm flex flex-col items-center">
                 <h3 class="text-lg font-semibold mb-4 dark:text-white">Daily Progress</h3>
-                <div class="relative w-48 h-48">
-                    <svg class="w-48 h-48 transform -rotate-90">
-                        <circle cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-gray-200 dark:stroke-gray-700"/>
-                        <circle id="progress-circle" cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-green-500" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553" style="transition:stroke-dashoffset 0.5s"/>
-                    </svg>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span id="progress-calories" class="text-3xl font-bold dark:text-white">0</span>
-                        <span class="text-gray-500 dark:text-gray-400 text-sm">/ <span id="progress-goal">2000</span> kcal</span>
-                    </div>
-                </div>
-                <p id="progress-remaining" class="mt-4 text-green-600 font-semibold">2000 kcal remaining</p>
+                <div class="relative w-48 h-48"><svg class="w-48 h-48 transform -rotate-90"><circle cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-gray-200 dark:stroke-gray-700"/><circle id="progress-circle" cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-green-500" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553" style="transition:stroke-dashoffset 0.5s"/></svg><div class="absolute inset-0 flex flex-col items-center justify-center"><span id="progress-calories" class="text-3xl font-bold dark:text-white">0</span><span class="text-gray-500 text-sm">/ <span id="progress-goal">2000</span></span></div></div>
+                <p id="progress-remaining" class="mt-4 text-green-600 font-semibold">2000 kcal left</p>
             </div>
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-                <h3 class="text-lg font-semibold mb-4 dark:text-white">Today's Macros</h3>
+                <h3 class="text-lg font-semibold mb-4 dark:text-white">Macros</h3>
                 <div class="space-y-4">
-                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Protein</span><span id="macro-protein" class="font-semibold text-blue-600">0g</span></div><div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full"><div id="bar-protein" class="h-2 bg-blue-500 rounded-full transition-all" style="width:0%"></div></div></div>
-                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Carbs</span><span id="macro-carbs" class="font-semibold text-purple-600">0g</span></div><div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full"><div id="bar-carbs" class="h-2 bg-purple-500 rounded-full transition-all" style="width:0%"></div></div></div>
-                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Fat</span><span id="macro-fat" class="font-semibold text-orange-600">0g</span></div><div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full"><div id="bar-fat" class="h-2 bg-orange-500 rounded-full transition-all" style="width:0%"></div></div></div>
+                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Protein</span><span id="macro-protein" class="font-semibold text-blue-600">0g</span></div><div class="h-2 bg-gray-200 rounded-full"><div id="bar-protein" class="h-2 bg-blue-500 rounded-full" style="width:0%"></div></div></div>
+                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Carbs</span><span id="macro-carbs" class="font-semibold text-purple-600">0g</span></div><div class="h-2 bg-gray-200 rounded-full"><div id="bar-carbs" class="h-2 bg-purple-500 rounded-full" style="width:0%"></div></div></div>
+                    <div><div class="flex justify-between mb-1"><span class="text-gray-600 dark:text-gray-400">Fat</span><span id="macro-fat" class="font-semibold text-orange-600">0g</span></div><div class="h-2 bg-gray-200 rounded-full"><div id="bar-fat" class="h-2 bg-orange-500 rounded-full" style="width:0%"></div></div></div>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm text-center">
                 <h3 class="text-lg font-semibold mb-4 dark:text-white">🔥 Streak</h3>
                 <p id="streak-count" class="text-6xl font-bold text-orange-500">0</p>
-                <p class="text-gray-500 dark:text-gray-400 mt-2">days in a row</p>
+                <p class="text-gray-500 mt-2">days</p>
             </div>
         </div>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold dark:text-white">Today's Meals</h3>
-                <button onclick="showTab('add-meal')" class="text-green-600 font-semibold">+ Add Meal</button>
-            </div>
+            <div class="flex justify-between mb-4"><h3 class="text-lg font-semibold dark:text-white">Today's Meals</h3><button onclick="showTab('add-meal')" class="text-green-600 font-semibold">+ Add</button></div>
             <div id="meals-list" class="space-y-3"><div class="text-center text-gray-500 py-8">Loading...</div></div>
         </div>
     </div>
-
-    <!-- ADD MEAL -->
     <div id="panel-add-meal" class="tab-panel hidden">
-        <h2 class="text-2xl font-bold mb-6 dark:text-white">📸 Add New Meal</h2>
+        <h2 class="text-2xl font-bold mb-6 dark:text-white">📸 Add Meal</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm mb-6">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <div id="dropZone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer">
-                    <div class="text-5xl mb-4">📷</div>
-                    <p class="font-semibold text-lg dark:text-white">Upload Food Photo</p>
-                    <p class="text-gray-500 text-sm mt-1">Click or drag and drop</p>
-                    <input type="file" id="imageInput" accept="image/*" class="hidden">
-                </div>
-                <div id="imagePreview" class="hidden mt-4"><img id="previewImg" class="max-h-64 mx-auto rounded-lg"></div>
-                <button type="submit" id="analyzeBtn" class="w-full mt-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 disabled:opacity-50">✨ Analyze with AI</button>
-            </form>
+            <form id="uploadForm"><div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-green-500 cursor-pointer"><div class="text-5xl mb-4">📷</div><p class="font-semibold dark:text-white">Upload Food Photo</p><input type="file" id="imageInput" accept="image/*" class="hidden"></div><div id="imagePreview" class="hidden mt-4"><img id="previewImg" class="max-h-64 mx-auto rounded-lg"></div><button type="submit" id="analyzeBtn" class="w-full mt-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 disabled:opacity-50">✨ Analyze</button></form>
         </div>
-        <div id="analysisResults" class="hidden bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-2xl p-8">
-            <h3 class="text-xl font-semibold text-green-600 mb-4">✅ Analysis Results</h3>
-            <div class="text-center mb-6">
+        <div id="analysisResults" class="hidden bg-green-50 dark:bg-green-900/20 border-2 border-green-200 rounded-2xl p-6 mb-6">
+            <h3 class="text-xl font-semibold text-green-600 mb-4">✅ Results</h3>
+            <div class="text-center mb-4">
                 <h4 id="result-name" class="text-2xl font-bold dark:text-white"></h4>
+                <p id="result-local" class="text-gray-500"></p>
+                <p id="result-cuisine" class="text-sm text-gray-500"></p>
                 <p id="result-calories" class="text-4xl font-bold text-green-600 mt-2"></p>
-                <p id="result-portion" class="text-gray-600 dark:text-gray-400 mt-1"></p>
-                <div class="flex gap-2 justify-center mt-4 flex-wrap">
-                    <span id="result-protein" class="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-sm"></span>
-                    <span id="result-carbs" class="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full text-sm"></span>
-                    <span id="result-fat" class="px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 rounded-full text-sm"></span>
-                </div>
+                <p id="result-portion" class="text-gray-500"></p>
+                <div class="flex gap-2 justify-center mt-3"><span id="result-protein" class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"></span><span id="result-carbs" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm"></span><span id="result-fat" class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm"></span></div>
+                <p id="result-tip" class="text-sm text-green-700 mt-3 italic"></p>
             </div>
-            <div class="flex gap-4">
-                <button onclick="saveMeal()" class="flex-1 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">💾 Save</button>
-                <button onclick="cancelAnalysis()" class="flex-1 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">❌ Cancel</button>
+            <div class="bg-yellow-50 rounded-xl p-4 mb-4">
+                <p class="font-semibold text-yellow-700 mb-2">❓ Wrong? Enter correct name:</p>
+                <div class="flex gap-2 flex-wrap"><input type="text" id="correctName" placeholder="e.g. Upma, Idli" class="flex-1 px-4 py-2 border rounded-lg"><select id="correctCuisine" class="px-4 py-2 border rounded-lg"><option value="">Cuisine</option>{% for c in cuisines %}<option value="{{ c.name }}">{{ c.emoji }} {{ c.name }}</option>{% endfor %}</select><button onclick="correctFood()" class="px-4 py-2 bg-yellow-500 text-white rounded-lg">Fix</button></div>
             </div>
+            <div class="flex gap-4"><button onclick="saveMeal()" class="flex-1 py-3 bg-green-600 text-white font-semibold rounded-lg">💾 Save</button><button onclick="cancelAnalysis()" class="flex-1 py-3 border text-gray-700 rounded-lg">❌ Cancel</button></div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mt-6">
-            <h3 class="text-lg font-semibold mb-4 dark:text-white">💡 AI Meal Suggestions</h3>
-            <button onclick="getSuggestions()" id="suggestBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Get Suggestions</button>
+        <div id="recommendationsSection" class="hidden bg-blue-50 rounded-2xl p-6 mb-6">
+            <h3 class="text-lg font-semibold text-blue-700 mb-4">💡 Better Alternatives</h3>
+            <div id="recommendations-list" class="space-y-3"></div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 dark:text-white">🍽️ Suggestions</h3>
+            <button onclick="getSuggestions()" id="suggestBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg">Get Ideas</button>
             <div id="suggestions-list" class="mt-4 space-y-3 hidden"></div>
         </div>
     </div>
-
-    <!-- STATS -->
+    <div id="panel-recipes" class="tab-panel hidden">
+        <h2 class="text-2xl font-bold mb-6 dark:text-white">🍳 Recipes</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6">
+            <div class="flex gap-4 flex-wrap mb-4"><select id="mealTypeSelect" class="px-4 py-3 border rounded-lg"><option value="any">Any</option><option value="breakfast">Breakfast</option><option value="lunch">Lunch</option><option value="dinner">Dinner</option><option value="snack">Snack</option></select><button onclick="getRecipes()" id="recipeBtn" class="px-6 py-3 bg-green-600 text-white rounded-lg">🍳 Get Recipes</button></div>
+        </div>
+        <div id="recipes-list" class="space-y-4"></div>
+    </div>
     <div id="panel-stats" class="tab-panel hidden">
-        <h2 class="text-2xl font-bold mb-6 dark:text-white">📈 Statistics</h2>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6">
-            <h3 class="text-lg font-semibold mb-4 dark:text-white">Weekly Calories</h3>
-            <canvas id="weeklyChart" height="200"></canvas>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6">
-            <h3 class="text-lg font-semibold mb-4 dark:text-white">Monthly Overview</h3>
-            <canvas id="monthlyChart" height="150"></canvas>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-            <h3 class="text-lg font-semibold mb-4 dark:text-white">📤 Export Data</h3>
-            <button onclick="exportData()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">Download CSV</button>
-        </div>
+        <h2 class="text-2xl font-bold mb-6 dark:text-white">📈 Stats</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6"><h3 class="font-semibold mb-4 dark:text-white">Weekly</h3><canvas id="weeklyChart" height="200"></canvas></div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6"><h3 class="font-semibold mb-4 dark:text-white">Monthly</h3><canvas id="monthlyChart" height="150"></canvas></div>
+        <button onclick="exportData()" class="px-6 py-3 bg-gray-600 text-white rounded-lg">📤 Export</button>
     </div>
-
-    <!-- ACHIEVEMENTS -->
-    <div id="panel-achievements" class="tab-panel hidden">
-        <h2 class="text-2xl font-bold mb-6 dark:text-white">🏆 Achievements</h2>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6 text-center">
-            <p class="text-6xl mb-2">🔥</p>
-            <p class="text-4xl font-bold text-orange-500"><span id="achievement-streak">0</span> Day Streak</p>
-            <p class="text-gray-500 dark:text-gray-400 mt-4">Total Meals: <span id="total-meals" class="font-bold">0</span></p>
-        </div>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-            <h3 class="text-lg font-semibold mb-4 dark:text-white">Your Badges</h3>
-            <div id="achievements-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-        </div>
-    </div>
-
-    <!-- SETTINGS -->
     <div id="panel-settings" class="tab-panel hidden">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">⚙️ Settings</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm mb-6">
             <form id="profileForm" class="space-y-6">
-                <div>
-                    <h3 class="font-semibold text-lg mb-4 dark:text-white">📏 Body Metrics</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Weight (kg)</label><input type="number" id="weight" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"></div>
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Height (cm)</label><input type="number" id="height" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"></div>
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Age</label><input type="number" id="age" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"></div>
-                    </div>
-                </div>
+                <div><h3 class="font-semibold mb-4 dark:text-white">📏 Body</h3><div class="grid grid-cols-3 gap-4"><div><label class="block text-sm text-gray-500 mb-1">Weight (kg)</label><input type="number" id="weight" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"></div><div><label class="block text-sm text-gray-500 mb-1">Height (cm)</label><input type="number" id="height" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"></div><div><label class="block text-sm text-gray-500 mb-1">Age</label><input type="number" id="age" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"></div></div></div>
                 <hr class="dark:border-gray-700">
-                <div>
-                    <h3 class="font-semibold text-lg mb-4 dark:text-white">🎯 Fitness</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Gender</label><select id="gender" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"><option value="male">Male</option><option value="female">Female</option></select></div>
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Activity</label><select id="activity" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"><option value="sedentary">Sedentary</option><option value="light">Light</option><option value="moderate">Moderate</option><option value="active">Active</option><option value="very_active">Very Active</option></select></div>
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Goal</label><select id="goal" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"><option value="lose">Lose</option><option value="maintain">Maintain</option><option value="gain">Gain</option></select></div>
-                    </div>
-                </div>
-                <button type="submit" class="w-full py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700">💾 Save Profile</button>
+                <div><h3 class="font-semibold mb-4 dark:text-white">🎯 Fitness</h3><div class="grid grid-cols-3 gap-4"><div><label class="block text-sm text-gray-500 mb-1">Gender</label><select id="gender" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"><option value="male">Male</option><option value="female">Female</option></select></div><div><label class="block text-sm text-gray-500 mb-1">Activity</label><select id="activity" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"><option value="sedentary">Sedentary</option><option value="light">Light</option><option value="moderate">Moderate</option><option value="active">Active</option><option value="very_active">Very Active</option></select></div><div><label class="block text-sm text-gray-500 mb-1">Goal</label><select id="goal" class="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"><option value="lose">🔥 Lose</option><option value="maintain">⚖️ Maintain</option><option value="gain">💪 Gain</option></select></div></div></div>
+                <hr class="dark:border-gray-700">
+                <div><h3 class="font-semibold mb-4 dark:text-white">🍽️ Cuisines You Eat</h3><p class="text-gray-500 text-sm mb-3">Helps AI recognize your food better</p><div id="cuisineCheckboxes" class="grid grid-cols-2 md:grid-cols-4 gap-3">{% for c in cuisines %}<label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"><input type="checkbox" value="{{ c.code }}" class="cuisine-checkbox"><span class="dark:text-white text-sm">{{ c.emoji }} {{ c.name }}</span></label>{% endfor %}</div></div>
+                <button type="submit" class="w-full py-4 bg-green-600 text-white font-semibold rounded-xl">💾 Save</button>
             </form>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm text-center"><h4 class="text-gray-700 dark:text-gray-300">Calorie Goal</h4><p id="calorie-goal" class="text-3xl font-bold text-green-600 mt-2">2000 kcal</p></div>
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm text-center"><h4 class="text-gray-700 dark:text-gray-300">BMR</h4><p id="bmr" class="text-3xl font-bold text-green-600 mt-2">1800 kcal</p></div>
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm text-center"><h4 class="text-gray-700 dark:text-gray-300">TDEE</h4><p id="tdee" class="text-3xl font-bold text-green-600 mt-2">2200 kcal</p></div>
-        </div>
+        <div class="grid grid-cols-3 gap-4"><div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center"><p class="text-gray-500">Goal</p><p id="calorie-goal" class="text-2xl font-bold text-green-600">2000</p></div><div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center"><p class="text-gray-500">BMR</p><p id="bmr" class="text-2xl font-bold text-green-600">1800</p></div><div class="bg-white dark:bg-gray-800 rounded-xl p-6 text-center"><p class="text-gray-500">TDEE</p><p id="tdee" class="text-2xl font-bold text-green-600">2200</p></div></div>
     </div>
 </div>
 {% endblock %}
-
 {% block scripts %}
 <script>
-let analyzedFood=null,calorieGoal=2000,weeklyChart=null,monthlyChart=null;
-
-function showTab(name){
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
-    document.querySelectorAll('.tab-btn').forEach(t=>{t.classList.remove('text-green-600','border-b-2','border-green-600');t.classList.add('text-gray-500','dark:text-gray-400');});
-    document.getElementById('panel-'+name).classList.remove('hidden');
-    const tab=document.getElementById('tab-'+name);
-    tab.classList.add('text-green-600','border-b-2','border-green-600');
-    tab.classList.remove('text-gray-500','dark:text-gray-400');
-    if(name==='stats'){loadWeeklyStats();loadMonthlyStats();}
-}
-
-async function loadMeals(){
-    const r=await apiCall('/api/meals');
-    if(r.success){
-        calorieGoal=r.calorie_goal;
-        const consumed=r.totals.calories,remaining=Math.max(0,calorieGoal-consumed),pct=Math.min(100,consumed/calorieGoal*100);
-        document.getElementById('progress-circle').style.strokeDashoffset=553-(553*pct/100);
-        document.getElementById('progress-calories').textContent=consumed;
-        document.getElementById('progress-goal').textContent=calorieGoal;
-        document.getElementById('progress-remaining').textContent=remaining+' kcal remaining';
-        document.getElementById('macro-protein').textContent=r.totals.protein+'g';
-        document.getElementById('macro-carbs').textContent=r.totals.carbs+'g';
-        document.getElementById('macro-fat').textContent=r.totals.fat+'g';
-        document.getElementById('bar-protein').style.width=Math.min(100,r.totals.protein/150*100)+'%';
-        document.getElementById('bar-carbs').style.width=Math.min(100,r.totals.carbs/250*100)+'%';
-        document.getElementById('bar-fat').style.width=Math.min(100,r.totals.fat/65*100)+'%';
-        document.getElementById('streak-count').textContent=r.streak;
-        document.getElementById('achievement-streak').textContent=r.streak;
-        document.getElementById('total-meals').textContent=r.total_meals;
-        const ag=document.getElementById('achievements-grid');
-        ag.innerHTML=r.achievements.length?r.achievements.map(a=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-center"><div class="text-4xl mb-2">${a.icon}</div><p class="font-semibold dark:text-white">${a.name}</p><p class="text-sm text-gray-500">${a.desc}</p></div>`).join(''):'<p class="col-span-4 text-center text-gray-500">Start logging to earn badges!</p>';
-        const ml=document.getElementById('meals-list');
-        ml.innerHTML=r.today_meals.length?r.today_meals.map(m=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 flex justify-between items-start"><div><h4 class="font-semibold dark:text-white">${m.food_name}</h4><p class="text-green-600 font-semibold">${m.calories} kcal</p><p class="text-gray-500 text-sm">${m.portion_size||''}</p><p class="text-gray-600 dark:text-gray-300 text-sm">P:${m.protein}g C:${m.carbs}g F:${m.fat}g</p></div><button onclick="deleteMeal(${m.id})" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">🗑️</button></div>`).join(''):'<div class="text-center text-gray-500 py-8"><p class="text-4xl mb-2">🍽️</p><p>No meals today</p></div>';
-    }
-}
-
-async function deleteMeal(id){if(confirm('Delete?')){const r=await apiCall('/api/meals/'+id,{method:'DELETE'});if(r.success){showAlert('Deleted','success');loadMeals();}}}
-
-async function loadProfile(){
-    const r=await apiCall('/api/profile');
-    if(r.success){
-        const p=r.profile;
-        document.getElementById('weight').value=p.weight_kg||70;
-        document.getElementById('height').value=p.height_cm||170;
-        document.getElementById('age').value=p.age||25;
-        document.getElementById('gender').value=p.gender||'male';
-        document.getElementById('activity').value=p.activity_level||'moderate';
-        document.getElementById('goal').value=p.goal||'maintain';
-        document.getElementById('calorie-goal').textContent=p.daily_calorie_goal+' kcal';
-        document.getElementById('bmr').textContent=r.bmr+' kcal';
-        document.getElementById('tdee').textContent=r.tdee+' kcal';
-    }
-}
-
-document.getElementById('profileForm').addEventListener('submit',async(e)=>{
-    e.preventDefault();
-    const r=await apiCall('/api/profile',{method:'POST',body:JSON.stringify({weight_kg:document.getElementById('weight').value,height_cm:document.getElementById('height').value,age:document.getElementById('age').value,gender:document.getElementById('gender').value,activity_level:document.getElementById('activity').value,goal:document.getElementById('goal').value})});
-    if(r.success){showAlert('Saved! Goal: '+r.calorie_goal+' kcal','success');document.getElementById('calorie-goal').textContent=r.calorie_goal+' kcal';document.getElementById('bmr').textContent=r.bmr+' kcal';document.getElementById('tdee').textContent=r.tdee+' kcal';loadMeals();}else{showAlert(r.error||'Error','error');}
-});
-
-const dropZone=document.getElementById('dropZone'),imageInput=document.getElementById('imageInput');
-dropZone.addEventListener('click',()=>imageInput.click());
-dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('border-green-500');});
-dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('border-green-500'));
-dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('border-green-500');if(e.dataTransfer.files.length){imageInput.files=e.dataTransfer.files;showPreview(e.dataTransfer.files[0]);}});
-imageInput.addEventListener('change',e=>{if(e.target.files.length)showPreview(e.target.files[0]);});
-function showPreview(f){const r=new FileReader();r.onload=e=>{document.getElementById('previewImg').src=e.target.result;document.getElementById('imagePreview').classList.remove('hidden');};r.readAsDataURL(f);}
-
-document.getElementById('uploadForm').addEventListener('submit',async e=>{
-    e.preventDefault();
-    const file=imageInput.files[0];if(!file){showAlert('Select image','error');return;}
-    const btn=document.getElementById('analyzeBtn');btn.disabled=true;btn.textContent='⏳ Analyzing...';
-    const fd=new FormData();fd.append('image',file);
-    try{
-        const res=await fetch('/api/analyze',{method:'POST',body:fd});
-        const r=await res.json();
-        if(r.success){
-            analyzedFood=r.food;
-            document.getElementById('result-name').textContent=r.food.foodName;
-            document.getElementById('result-calories').textContent=r.food.calories+' kcal';
-            document.getElementById('result-portion').textContent='Portion: '+r.food.portionSize;
-            document.getElementById('result-protein').textContent='P: '+r.food.protein+'g';
-            document.getElementById('result-carbs').textContent='C: '+r.food.carbs+'g';
-            document.getElementById('result-fat').textContent='F: '+r.food.fat+'g';
-            document.getElementById('analysisResults').classList.remove('hidden');
-            showAlert('Analyzed!','success');
-        }else{showAlert(r.error||'Error','error');}
-    }catch(err){showAlert(err.message,'error');}
-    btn.disabled=false;btn.textContent='✨ Analyze with AI';
-});
-
-async function saveMeal(){
-    if(!analyzedFood)return;
-    const r=await apiCall('/api/meals',{method:'POST',body:JSON.stringify({food_name:analyzedFood.foodName,calories:analyzedFood.calories,protein:analyzedFood.protein,carbs:analyzedFood.carbs,fat:analyzedFood.fat,portion_size:analyzedFood.portionSize,confidence:analyzedFood.confidence})});
-    if(r.success){showAlert('Saved!','success');cancelAnalysis();loadMeals();showTab('overview');}else{showAlert(r.error||'Error','error');}
-}
-function cancelAnalysis(){analyzedFood=null;document.getElementById('analysisResults').classList.add('hidden');document.getElementById('imagePreview').classList.add('hidden');imageInput.value='';}
-
-async function getSuggestions(){
-    const btn=document.getElementById('suggestBtn');btn.disabled=true;btn.textContent='Loading...';
-    const remaining=Math.max(0,calorieGoal-parseInt(document.getElementById('progress-calories').textContent||0));
-    const r=await apiCall('/api/suggest',{method:'POST',body:JSON.stringify({remaining_calories:remaining,remaining_protein:30})});
-    if(r.success){
-        document.getElementById('suggestions-list').innerHTML=r.suggestions.map(s=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"><h4 class="font-semibold dark:text-white">${s.name}</h4><p class="text-green-600">${s.calories} kcal • ${s.protein}g protein</p><p class="text-gray-500 text-sm">${s.description}</p></div>`).join('');
-        document.getElementById('suggestions-list').classList.remove('hidden');
-    }else{showAlert(r.error||'Error','error');}
-    btn.disabled=false;btn.textContent='Get Suggestions';
-}
-
-async function loadWeeklyStats(){
-    const r=await apiCall('/api/stats/weekly');
-    if(r.success){
-        const ctx=document.getElementById('weeklyChart').getContext('2d');
-        if(weeklyChart)weeklyChart.destroy();
-        weeklyChart=new Chart(ctx,{type:'bar',data:{labels:r.stats.map(s=>s.date),datasets:[{label:'Calories',data:r.stats.map(s=>s.calories),backgroundColor:'#10b981',borderRadius:8}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false}}}}});
-    }
-}
-
-async function loadMonthlyStats(){
-    const r=await apiCall('/api/stats/monthly');
-    if(r.success){
-        const ctx=document.getElementById('monthlyChart').getContext('2d');
-        if(monthlyChart)monthlyChart.destroy();
-        monthlyChart=new Chart(ctx,{type:'line',data:{labels:r.stats.map(s=>s.date),datasets:[{label:'Calories',data:r.stats.map(s=>s.calories),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{grid:{display:false},ticks:{maxTicksLimit:10}}}}});
-    }
-}
-
-async function exportData(){
-    const r=await apiCall('/api/export/csv');
-    if(r.success){const blob=new Blob([r.csv],{type:'text/csv'});const url=window.URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=r.filename;a.click();showAlert('Exported!','success');}else{showAlert(r.error||'Error','error');}
-}
-
+let analyzedFood=null,calorieGoal=2000,wChart=null,mChart=null;
+function showTab(n){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));document.querySelectorAll('.tab-btn').forEach(t=>{t.classList.remove('text-green-600','border-b-2','border-green-600');t.classList.add('text-gray-500');});document.getElementById('panel-'+n).classList.remove('hidden');document.getElementById('tab-'+n).classList.add('text-green-600','border-b-2','border-green-600');document.getElementById('tab-'+n).classList.remove('text-gray-500');if(n==='stats'){loadWeeklyStats();loadMonthlyStats();}}
+async function loadMeals(){const r=await apiCall('/api/meals');if(r.success){calorieGoal=r.calorie_goal;const c=r.totals.calories,rem=Math.max(0,calorieGoal-c),pct=Math.min(100,c/calorieGoal*100);document.getElementById('progress-circle').style.strokeDashoffset=553-(553*pct/100);document.getElementById('progress-calories').textContent=c;document.getElementById('progress-goal').textContent=calorieGoal;document.getElementById('progress-remaining').textContent=rem+' kcal left';document.getElementById('macro-protein').textContent=r.totals.protein+'g';document.getElementById('macro-carbs').textContent=r.totals.carbs+'g';document.getElementById('macro-fat').textContent=r.totals.fat+'g';document.getElementById('bar-protein').style.width=Math.min(100,r.totals.protein/150*100)+'%';document.getElementById('bar-carbs').style.width=Math.min(100,r.totals.carbs/250*100)+'%';document.getElementById('bar-fat').style.width=Math.min(100,r.totals.fat/65*100)+'%';document.getElementById('streak-count').textContent=r.streak;document.getElementById('meals-list').innerHTML=r.today_meals.length?r.today_meals.map(m=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 flex justify-between"><div><h4 class="font-semibold dark:text-white">${m.food_name}</h4>${m.local_name?`<p class="text-sm text-gray-500">${m.local_name}</p>`:''}<p class="text-green-600 font-semibold">${m.calories} kcal</p></div><button onclick="deleteMeal(${m.id})" class="text-red-500">🗑️</button></div>`).join(''):'<div class="text-center text-gray-500 py-8">🍽️ No meals</div>';}}
+async function deleteMeal(id){if(confirm('Delete?')){await apiCall('/api/meals/'+id,{method:'DELETE'});loadMeals();}}
+async function loadProfile(){const r=await apiCall('/api/profile');if(r.success){const p=r.profile;document.getElementById('weight').value=p.weight_kg||70;document.getElementById('height').value=p.height_cm||170;document.getElementById('age').value=p.age||25;document.getElementById('gender').value=p.gender||'male';document.getElementById('activity').value=p.activity_level||'moderate';document.getElementById('goal').value=p.goal||'maintain';document.getElementById('calorie-goal').textContent=p.daily_calorie_goal;document.getElementById('bmr').textContent=r.bmr;document.getElementById('tdee').textContent=r.tdee;(p.preferred_cuisines||[]).forEach(c=>{const cb=document.querySelector(`.cuisine-checkbox[value="${c}"]`);if(cb)cb.checked=true;});}}
+document.getElementById('profileForm').addEventListener('submit',async e=>{e.preventDefault();const cuisines=Array.from(document.querySelectorAll('.cuisine-checkbox:checked')).map(c=>c.value);const r=await apiCall('/api/profile',{method:'POST',body:JSON.stringify({weight_kg:document.getElementById('weight').value,height_cm:document.getElementById('height').value,age:document.getElementById('age').value,gender:document.getElementById('gender').value,activity_level:document.getElementById('activity').value,goal:document.getElementById('goal').value,preferred_cuisines:cuisines})});if(r.success){showAlert('Saved! Goal: '+r.calorie_goal,'success');document.getElementById('calorie-goal').textContent=r.calorie_goal;document.getElementById('bmr').textContent=r.bmr;document.getElementById('tdee').textContent=r.tdee;loadMeals();}else showAlert(r.error,'error');});
+const dropZone=document.getElementById('dropZone'),imageInput=document.getElementById('imageInput');dropZone.onclick=()=>imageInput.click();dropZone.ondragover=e=>{e.preventDefault();dropZone.classList.add('border-green-500');};dropZone.ondragleave=()=>dropZone.classList.remove('border-green-500');dropZone.ondrop=e=>{e.preventDefault();dropZone.classList.remove('border-green-500');if(e.dataTransfer.files.length){imageInput.files=e.dataTransfer.files;showPreview(e.dataTransfer.files[0]);}};imageInput.onchange=e=>{if(e.target.files.length)showPreview(e.target.files[0]);};function showPreview(f){const r=new FileReader();r.onload=e=>{document.getElementById('previewImg').src=e.target.result;document.getElementById('imagePreview').classList.remove('hidden');};r.readAsDataURL(f);}
+document.getElementById('uploadForm').addEventListener('submit',async e=>{e.preventDefault();const file=imageInput.files[0];if(!file){showAlert('Select image','error');return;}const btn=document.getElementById('analyzeBtn');btn.disabled=true;btn.textContent='⏳ Analyzing...';const fd=new FormData();fd.append('image',file);try{const res=await fetch('/api/analyze',{method:'POST',body:fd});const r=await res.json();if(r.success){analyzedFood=r.food;document.getElementById('result-name').textContent=r.food.foodName;document.getElementById('result-local').textContent=r.food.localName?'Local: '+r.food.localName:'';document.getElementById('result-cuisine').textContent=r.food.cuisine||'';document.getElementById('result-calories').textContent=r.food.calories+' kcal';document.getElementById('result-portion').textContent=r.food.portionSize;document.getElementById('result-protein').textContent='P:'+r.food.protein+'g';document.getElementById('result-carbs').textContent='C:'+r.food.carbs+'g';document.getElementById('result-fat').textContent='F:'+r.food.fat+'g';document.getElementById('result-tip').textContent=r.food.healthTip||'';document.getElementById('analysisResults').classList.remove('hidden');showAlert('Analyzed!','success');getRecommendations();}else showAlert(r.error,'error');}catch(err){showAlert(err.message,'error');}btn.disabled=false;btn.textContent='✨ Analyze';});
+async function correctFood(){const name=document.getElementById('correctName').value.trim(),cuisine=document.getElementById('correctCuisine').value;if(!name){showAlert('Enter name','error');return;}showAlert('Fixing...','info');const r=await apiCall('/api/correct',{method:'POST',body:JSON.stringify({correct_name:name,cuisine:cuisine})});if(r.success){analyzedFood=r.food;document.getElementById('result-name').textContent=r.food.foodName;document.getElementById('result-local').textContent=r.food.localName?'Local: '+r.food.localName:'';document.getElementById('result-cuisine').textContent=r.food.cuisine||'';document.getElementById('result-calories').textContent=r.food.calories+' kcal';document.getElementById('result-protein').textContent='P:'+r.food.protein+'g';document.getElementById('result-carbs').textContent='C:'+r.food.carbs+'g';document.getElementById('result-fat').textContent='F:'+r.food.fat+'g';showAlert('Fixed!','success');getRecommendations();}else showAlert(r.error,'error');}
+async function getRecommendations(){if(!analyzedFood)return;const r=await apiCall('/api/recommend',{method:'POST',body:JSON.stringify({current_food:analyzedFood})});if(r.success&&r.recommendations.length){document.getElementById('recommendations-list').innerHTML=r.recommendations.map(rec=>`<div class="bg-white dark:bg-gray-800 rounded-lg p-4"><div class="flex justify-between"><div><h4 class="font-semibold dark:text-white">${rec.name}</h4>${rec.localName?`<p class="text-sm text-gray-500">${rec.localName}</p>`:''}</div><span class="text-green-600 font-bold">${rec.calories} kcal</span></div><p class="text-sm text-blue-600 mt-2">💡 ${rec.reason}</p></div>`).join('');document.getElementById('recommendationsSection').classList.remove('hidden');}}
+async function saveMeal(){if(!analyzedFood)return;const r=await apiCall('/api/meals',{method:'POST',body:JSON.stringify({food_name:analyzedFood.foodName,local_name:analyzedFood.localName||'',cuisine:analyzedFood.cuisine||'',calories:analyzedFood.calories,protein:analyzedFood.protein,carbs:analyzedFood.carbs,fat:analyzedFood.fat,portion_size:analyzedFood.portionSize})});if(r.success){showAlert('Saved!','success');cancelAnalysis();loadMeals();showTab('overview');}}
+function cancelAnalysis(){analyzedFood=null;document.getElementById('analysisResults').classList.add('hidden');document.getElementById('recommendationsSection').classList.add('hidden');document.getElementById('imagePreview').classList.add('hidden');document.getElementById('correctName').value='';imageInput.value='';}
+async function getSuggestions(){const btn=document.getElementById('suggestBtn');btn.disabled=true;btn.textContent='Loading...';const rem=Math.max(0,calorieGoal-parseInt(document.getElementById('progress-calories').textContent||0));const r=await apiCall('/api/suggest',{method:'POST',body:JSON.stringify({remaining_calories:rem})});if(r.success){document.getElementById('suggestions-list').innerHTML=r.suggestions.map(s=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"><h4 class="font-semibold dark:text-white">${s.name}</h4><p class="text-green-600">${s.calories} kcal</p><p class="text-gray-500 text-sm">${s.description}</p></div>`).join('');document.getElementById('suggestions-list').classList.remove('hidden');}btn.disabled=false;btn.textContent='Get Ideas';}
+async function getRecipes(){const btn=document.getElementById('recipeBtn');btn.disabled=true;btn.textContent='Loading...';const r=await apiCall('/api/recipes',{method:'POST',body:JSON.stringify({meal_type:document.getElementById('mealTypeSelect').value})});if(r.success){document.getElementById('recipes-list').innerHTML=r.recipes.map(rec=>`<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm"><div class="flex justify-between mb-4"><div><h3 class="text-xl font-bold dark:text-white">${rec.name}</h3><p class="text-gray-500">${rec.cuisine} • ${rec.prepTime}</p></div><div class="text-right"><span class="text-2xl font-bold text-green-600">${rec.calories}</span><span class="text-gray-500"> kcal</span></div></div><div class="mb-4"><h4 class="font-semibold mb-2 dark:text-white">📝 Ingredients</h4><ul class="text-sm text-gray-600 dark:text-gray-400">${rec.ingredients.map(i=>`<li>• ${i}</li>`).join('')}</ul></div><div class="mb-4"><h4 class="font-semibold mb-2 dark:text-white">👨‍🍳 Steps</h4><ol class="text-sm text-gray-600 dark:text-gray-400">${rec.steps.map((s,i)=>`<li>${i+1}. ${s}</li>`).join('')}</ol></div>${rec.healthyTip?`<div class="bg-green-50 rounded-lg p-3"><p class="text-sm text-green-700">💡 ${rec.healthyTip}</p></div>`:''}</div>`).join('');}btn.disabled=false;btn.textContent='🍳 Get Recipes';}
+async function loadWeeklyStats(){const r=await apiCall('/api/stats/weekly');if(r.success){const ctx=document.getElementById('weeklyChart').getContext('2d');if(wChart)wChart.destroy();wChart=new Chart(ctx,{type:'bar',data:{labels:r.stats.map(s=>s.date),datasets:[{data:r.stats.map(s=>s.calories),backgroundColor:'#10b981',borderRadius:8}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});}}
+async function loadMonthlyStats(){const r=await apiCall('/api/stats/monthly');if(r.success){const ctx=document.getElementById('monthlyChart').getContext('2d');if(mChart)mChart.destroy();mChart=new Chart(ctx,{type:'line',data:{labels:r.stats.map(s=>s.date),datasets:[{data:r.stats.map(s=>s.calories),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});}}
+async function exportData(){const r=await apiCall('/api/export/csv');if(r.success){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([r.csv]));a.download=r.filename;a.click();showAlert('Exported!','success');}}
 loadMeals();loadProfile();
 </script>
 {% endblock %}
