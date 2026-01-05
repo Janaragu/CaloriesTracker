@@ -127,9 +127,6 @@ def manifest():
     return send_from_directory('static', 'manifest.json')
 
 
-@app.route('/sw.js')
-def service_worker():
-    return send_from_directory('static', 'sw.js')
 
 
 # ==================== PAGE ROUTES ====================
