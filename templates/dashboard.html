@@ -13,6 +13,7 @@
         </div>
     </div>
 </nav>
+
 <div class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex gap-1 mb-8 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         <button onclick="showTab('overview')" id="tab-overview" class="tab-btn px-4 py-3 font-semibold text-green-600 border-b-2 border-green-600 whitespace-nowrap">📊 Overview</button>
@@ -22,7 +23,7 @@
         <button onclick="showTab('settings')" id="tab-settings" class="tab-btn px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 whitespace-nowrap">⚙️ Settings</button>
     </div>
 
-    <!-- OVERVIEW TAB -->
+    <!-- OVERVIEW -->
     <div id="panel-overview" class="tab-panel">
         <div class="grid lg:grid-cols-3 gap-6 mb-8">
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm flex flex-col items-center">
@@ -30,7 +31,7 @@
                 <div class="relative w-48 h-48">
                     <svg class="w-48 h-48 transform -rotate-90">
                         <circle cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-gray-200 dark:stroke-gray-700"/>
-                        <circle id="progress-circle" cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-green-500" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553" style="transition: stroke-dashoffset 0.5s"/>
+                        <circle id="progress-circle" cx="96" cy="96" r="88" stroke-width="12" fill="none" class="stroke-green-500" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553" style="transition:stroke-dashoffset 0.5s"/>
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span id="progress-calories" class="text-3xl font-bold dark:text-white">0</span>
@@ -56,21 +57,21 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold dark:text-white">Today's Meals</h3>
-                <button onclick="showTab('add-meal')" class="text-green-600 hover:text-green-700 font-semibold">+ Add Meal</button>
+                <button onclick="showTab('add-meal')" class="text-green-600 font-semibold">+ Add Meal</button>
             </div>
-            <div id="meals-list" class="space-y-3"><div class="text-center text-gray-500 dark:text-gray-400 py-8">Loading...</div></div>
+            <div id="meals-list" class="space-y-3"><div class="text-center text-gray-500 py-8">Loading...</div></div>
         </div>
     </div>
 
-    <!-- ADD MEAL TAB -->
+    <!-- ADD MEAL -->
     <div id="panel-add-meal" class="tab-panel hidden">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">📸 Add New Meal</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm mb-6">
             <form id="uploadForm" enctype="multipart/form-data">
-                <div id="dropZone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 transition cursor-pointer">
+                <div id="dropZone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 cursor-pointer">
                     <div class="text-5xl mb-4">📷</div>
                     <p class="font-semibold text-lg dark:text-white">Upload Food Photo</p>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Click or drag and drop</p>
+                    <p class="text-gray-500 text-sm mt-1">Click or drag and drop</p>
                     <input type="file" id="imageInput" accept="image/*" class="hidden">
                 </div>
                 <div id="imagePreview" class="hidden mt-4"><img id="previewImg" class="max-h-64 mx-auto rounded-lg"></div>
@@ -101,7 +102,7 @@
         </div>
     </div>
 
-    <!-- STATS TAB -->
+    <!-- STATS -->
     <div id="panel-stats" class="tab-panel hidden">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">📈 Statistics</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6">
@@ -118,7 +119,7 @@
         </div>
     </div>
 
-    <!-- ACHIEVEMENTS TAB -->
+    <!-- ACHIEVEMENTS -->
     <div id="panel-achievements" class="tab-panel hidden">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">🏆 Achievements</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-6 text-center">
@@ -132,7 +133,7 @@
         </div>
     </div>
 
-    <!-- SETTINGS TAB -->
+    <!-- SETTINGS -->
     <div id="panel-settings" class="tab-panel hidden">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">⚙️ Settings</h2>
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm mb-6">
@@ -154,14 +155,6 @@
                         <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Goal</label><select id="goal" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"><option value="lose">Lose</option><option value="maintain">Maintain</option><option value="gain">Gain</option></select></div>
                     </div>
                 </div>
-                <hr class="dark:border-gray-700">
-                <div>
-                    <h3 class="font-semibold text-lg mb-4 dark:text-white">🌍 App</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Language</label><select id="language" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 dark:text-white"><option value="en">🇬🇧 English</option><option value="de">🇩🇪 Deutsch</option></select></div>
-                        <div><label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Theme</label><button type="button" onclick="toggleDarkMode()" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white text-left"><span class="dark:hidden">🌙 Dark Mode</span><span class="hidden dark:inline">☀️ Light Mode</span></button></div>
-                    </div>
-                </div>
                 <button type="submit" class="w-full py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700">💾 Save Profile</button>
             </form>
         </div>
@@ -176,48 +169,48 @@
 
 {% block scripts %}
 <script>
-let analyzedFood = null, calorieGoal = 2000, weeklyChart = null, monthlyChart = null;
+let analyzedFood=null,calorieGoal=2000,weeklyChart=null,monthlyChart=null;
 
-function showTab(name) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-    document.querySelectorAll('.tab-btn').forEach(t => { t.classList.remove('text-green-600','border-b-2','border-green-600'); t.classList.add('text-gray-500','dark:text-gray-400'); });
+function showTab(name){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(t=>{t.classList.remove('text-green-600','border-b-2','border-green-600');t.classList.add('text-gray-500','dark:text-gray-400');});
     document.getElementById('panel-'+name).classList.remove('hidden');
-    const tab = document.getElementById('tab-'+name);
+    const tab=document.getElementById('tab-'+name);
     tab.classList.add('text-green-600','border-b-2','border-green-600');
     tab.classList.remove('text-gray-500','dark:text-gray-400');
     if(name==='stats'){loadWeeklyStats();loadMonthlyStats();}
 }
 
-async function loadMeals() {
-    const r = await apiCall('/api/meals');
-    if(r.success) {
-        calorieGoal = r.calorie_goal;
-        const consumed = r.totals.calories, remaining = Math.max(0,calorieGoal-consumed), pct = Math.min(100,consumed/calorieGoal*100);
-        document.getElementById('progress-circle').style.strokeDashoffset = 553-(553*pct/100);
-        document.getElementById('progress-calories').textContent = consumed;
-        document.getElementById('progress-goal').textContent = calorieGoal;
-        document.getElementById('progress-remaining').textContent = remaining+' kcal remaining';
-        document.getElementById('macro-protein').textContent = r.totals.protein+'g';
-        document.getElementById('macro-carbs').textContent = r.totals.carbs+'g';
-        document.getElementById('macro-fat').textContent = r.totals.fat+'g';
-        document.getElementById('bar-protein').style.width = Math.min(100,r.totals.protein/150*100)+'%';
-        document.getElementById('bar-carbs').style.width = Math.min(100,r.totals.carbs/250*100)+'%';
-        document.getElementById('bar-fat').style.width = Math.min(100,r.totals.fat/65*100)+'%';
-        document.getElementById('streak-count').textContent = r.streak;
-        document.getElementById('achievement-streak').textContent = r.streak;
-        document.getElementById('total-meals').textContent = r.total_meals;
-        const ag = document.getElementById('achievements-grid');
-        ag.innerHTML = r.achievements.length ? r.achievements.map(a=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-center"><div class="text-4xl mb-2">${a.icon}</div><p class="font-semibold dark:text-white">${a.name}</p><p class="text-sm text-gray-500 dark:text-gray-400">${a.desc}</p></div>`).join('') : '<p class="col-span-4 text-center text-gray-500">Start logging to earn badges!</p>';
-        const ml = document.getElementById('meals-list');
-        ml.innerHTML = r.today_meals.length ? r.today_meals.map(m=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 flex justify-between items-start"><div><h4 class="font-semibold dark:text-white">${m.food_name}</h4><p class="text-green-600 font-semibold">${m.calories} kcal</p><p class="text-gray-500 dark:text-gray-400 text-sm">${m.portion_size||''}</p><p class="text-gray-600 dark:text-gray-300 text-sm">P:${m.protein}g C:${m.carbs}g F:${m.fat}g</p></div><button onclick="deleteMeal(${m.id})" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">🗑️</button></div>`).join('') : '<div class="text-center text-gray-500 dark:text-gray-400 py-8"><p class="text-4xl mb-2">🍽️</p><p>No meals today</p></div>';
+async function loadMeals(){
+    const r=await apiCall('/api/meals');
+    if(r.success){
+        calorieGoal=r.calorie_goal;
+        const consumed=r.totals.calories,remaining=Math.max(0,calorieGoal-consumed),pct=Math.min(100,consumed/calorieGoal*100);
+        document.getElementById('progress-circle').style.strokeDashoffset=553-(553*pct/100);
+        document.getElementById('progress-calories').textContent=consumed;
+        document.getElementById('progress-goal').textContent=calorieGoal;
+        document.getElementById('progress-remaining').textContent=remaining+' kcal remaining';
+        document.getElementById('macro-protein').textContent=r.totals.protein+'g';
+        document.getElementById('macro-carbs').textContent=r.totals.carbs+'g';
+        document.getElementById('macro-fat').textContent=r.totals.fat+'g';
+        document.getElementById('bar-protein').style.width=Math.min(100,r.totals.protein/150*100)+'%';
+        document.getElementById('bar-carbs').style.width=Math.min(100,r.totals.carbs/250*100)+'%';
+        document.getElementById('bar-fat').style.width=Math.min(100,r.totals.fat/65*100)+'%';
+        document.getElementById('streak-count').textContent=r.streak;
+        document.getElementById('achievement-streak').textContent=r.streak;
+        document.getElementById('total-meals').textContent=r.total_meals;
+        const ag=document.getElementById('achievements-grid');
+        ag.innerHTML=r.achievements.length?r.achievements.map(a=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-center"><div class="text-4xl mb-2">${a.icon}</div><p class="font-semibold dark:text-white">${a.name}</p><p class="text-sm text-gray-500">${a.desc}</p></div>`).join(''):'<p class="col-span-4 text-center text-gray-500">Start logging to earn badges!</p>';
+        const ml=document.getElementById('meals-list');
+        ml.innerHTML=r.today_meals.length?r.today_meals.map(m=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 flex justify-between items-start"><div><h4 class="font-semibold dark:text-white">${m.food_name}</h4><p class="text-green-600 font-semibold">${m.calories} kcal</p><p class="text-gray-500 text-sm">${m.portion_size||''}</p><p class="text-gray-600 dark:text-gray-300 text-sm">P:${m.protein}g C:${m.carbs}g F:${m.fat}g</p></div><button onclick="deleteMeal(${m.id})" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">🗑️</button></div>`).join(''):'<div class="text-center text-gray-500 py-8"><p class="text-4xl mb-2">🍽️</p><p>No meals today</p></div>';
     }
 }
 
-async function deleteMeal(id) { if(confirm('Delete?')){ const r=await apiCall('/api/meals/'+id,{method:'DELETE'}); if(r.success){showAlert('Deleted','success');loadMeals();}}}
+async function deleteMeal(id){if(confirm('Delete?')){const r=await apiCall('/api/meals/'+id,{method:'DELETE'});if(r.success){showAlert('Deleted','success');loadMeals();}}}
 
-async function loadProfile() {
-    const r = await apiCall('/api/profile');
-    if(r.success) {
+async function loadProfile(){
+    const r=await apiCall('/api/profile');
+    if(r.success){
         const p=r.profile;
         document.getElementById('weight').value=p.weight_kg||70;
         document.getElementById('height').value=p.height_cm||170;
@@ -225,17 +218,16 @@ async function loadProfile() {
         document.getElementById('gender').value=p.gender||'male';
         document.getElementById('activity').value=p.activity_level||'moderate';
         document.getElementById('goal').value=p.goal||'maintain';
-        document.getElementById('language').value=p.language||'en';
         document.getElementById('calorie-goal').textContent=p.daily_calorie_goal+' kcal';
         document.getElementById('bmr').textContent=r.bmr+' kcal';
         document.getElementById('tdee').textContent=r.tdee+' kcal';
     }
 }
 
-document.getElementById('profileForm').addEventListener('submit', async(e)=>{
+document.getElementById('profileForm').addEventListener('submit',async(e)=>{
     e.preventDefault();
-    const r = await apiCall('/api/profile',{method:'POST',body:JSON.stringify({weight_kg:document.getElementById('weight').value,height_cm:document.getElementById('height').value,age:document.getElementById('age').value,gender:document.getElementById('gender').value,activity_level:document.getElementById('activity').value,goal:document.getElementById('goal').value,language:document.getElementById('language').value})});
-    if(r.success){showAlert('Saved! Goal: '+r.calorie_goal+' kcal','success');document.getElementById('calorie-goal').textContent=r.calorie_goal+' kcal';document.getElementById('bmr').textContent=r.bmr+' kcal';document.getElementById('tdee').textContent=r.tdee+' kcal';loadMeals();}else{showAlert(r.error,'error');}
+    const r=await apiCall('/api/profile',{method:'POST',body:JSON.stringify({weight_kg:document.getElementById('weight').value,height_cm:document.getElementById('height').value,age:document.getElementById('age').value,gender:document.getElementById('gender').value,activity_level:document.getElementById('activity').value,goal:document.getElementById('goal').value})});
+    if(r.success){showAlert('Saved! Goal: '+r.calorie_goal+' kcal','success');document.getElementById('calorie-goal').textContent=r.calorie_goal+' kcal';document.getElementById('bmr').textContent=r.bmr+' kcal';document.getElementById('tdee').textContent=r.tdee+' kcal';loadMeals();}else{showAlert(r.error||'Error','error');}
 });
 
 const dropZone=document.getElementById('dropZone'),imageInput=document.getElementById('imageInput');
@@ -264,7 +256,7 @@ document.getElementById('uploadForm').addEventListener('submit',async e=>{
             document.getElementById('result-fat').textContent='F: '+r.food.fat+'g';
             document.getElementById('analysisResults').classList.remove('hidden');
             showAlert('Analyzed!','success');
-        }else{showAlert(r.error,'error');}
+        }else{showAlert(r.error||'Error','error');}
     }catch(err){showAlert(err.message,'error');}
     btn.disabled=false;btn.textContent='✨ Analyze with AI';
 });
@@ -272,19 +264,18 @@ document.getElementById('uploadForm').addEventListener('submit',async e=>{
 async function saveMeal(){
     if(!analyzedFood)return;
     const r=await apiCall('/api/meals',{method:'POST',body:JSON.stringify({food_name:analyzedFood.foodName,calories:analyzedFood.calories,protein:analyzedFood.protein,carbs:analyzedFood.carbs,fat:analyzedFood.fat,portion_size:analyzedFood.portionSize,confidence:analyzedFood.confidence})});
-    if(r.success){showAlert('Saved!','success');cancelAnalysis();loadMeals();showTab('overview');}else{showAlert(r.error,'error');}
+    if(r.success){showAlert('Saved!','success');cancelAnalysis();loadMeals();showTab('overview');}else{showAlert(r.error||'Error','error');}
 }
 function cancelAnalysis(){analyzedFood=null;document.getElementById('analysisResults').classList.add('hidden');document.getElementById('imagePreview').classList.add('hidden');imageInput.value='';}
 
 async function getSuggestions(){
     const btn=document.getElementById('suggestBtn');btn.disabled=true;btn.textContent='Loading...';
-    const remaining=Math.max(0,calorieGoal-parseInt(document.getElementById('progress-calories').textContent));
+    const remaining=Math.max(0,calorieGoal-parseInt(document.getElementById('progress-calories').textContent||0));
     const r=await apiCall('/api/suggest',{method:'POST',body:JSON.stringify({remaining_calories:remaining,remaining_protein:30})});
     if(r.success){
-        const list=document.getElementById('suggestions-list');
-        list.innerHTML=r.suggestions.map(s=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"><h4 class="font-semibold dark:text-white">${s.name}</h4><p class="text-green-600">${s.calories} kcal • ${s.protein}g protein</p><p class="text-gray-500 dark:text-gray-400 text-sm">${s.description}</p></div>`).join('');
-        list.classList.remove('hidden');
-    }else{showAlert(r.error,'error');}
+        document.getElementById('suggestions-list').innerHTML=r.suggestions.map(s=>`<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"><h4 class="font-semibold dark:text-white">${s.name}</h4><p class="text-green-600">${s.calories} kcal • ${s.protein}g protein</p><p class="text-gray-500 text-sm">${s.description}</p></div>`).join('');
+        document.getElementById('suggestions-list').classList.remove('hidden');
+    }else{showAlert(r.error||'Error','error');}
     btn.disabled=false;btn.textContent='Get Suggestions';
 }
 
@@ -308,7 +299,7 @@ async function loadMonthlyStats(){
 
 async function exportData(){
     const r=await apiCall('/api/export/csv');
-    if(r.success){const blob=new Blob([r.csv],{type:'text/csv'});const url=window.URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=r.filename;a.click();showAlert('Exported!','success');}else{showAlert(r.error,'error');}
+    if(r.success){const blob=new Blob([r.csv],{type:'text/csv'});const url=window.URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=r.filename;a.click();showAlert('Exported!','success');}else{showAlert(r.error||'Error','error');}
 }
 
 loadMeals();loadProfile();

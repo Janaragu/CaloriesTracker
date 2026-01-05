@@ -1,145 +1,82 @@
 {% extends "base.html" %}
-
 {% block title %}CalorieSnap - AI Nutrition Tracker{% endblock %}
-
 {% block content %}
-<!-- Navbar -->
 <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <a href="/" class="text-2xl font-bold text-green-600">🍎 CalorieSnap</a>
         <div class="flex gap-3 items-center">
             <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                <span class="dark:hidden">🌙</span>
-                <span class="hidden dark:inline">☀️</span>
+                <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
             </button>
-            <a href="/login" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white transition">Login</a>
-            <a href="/signup" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Sign Up</a>
+            <a href="/login" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-white">Login</a>
+            <a href="/signup" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Sign Up</a>
         </div>
     </div>
 </nav>
 
-<!-- Hero Section -->
 <section class="py-20 px-4">
     <div class="max-w-4xl mx-auto text-center">
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent">
-            AI-Powered Calorie Tracking
-        </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-            📸 Snap a photo of your food and let AI do the rest. Track calories, macros, and achieve your fitness goals effortlessly.
-        </p>
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent">AI-Powered Calorie Tracking</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">📸 Snap a photo of your food and let AI do the rest. Track calories, macros, and achieve your fitness goals.</p>
         <div class="flex gap-4 justify-center flex-wrap">
-            <a href="/signup" class="px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-xl hover:bg-green-700 hover:-translate-y-1 transition-all shadow-lg">
-                Get Started Free 🚀
-            </a>
-            <a href="#features" class="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-lg font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                Learn More
-            </a>
-        </div>
-        
-        <!-- Stats -->
-        <div class="flex justify-center gap-8 mt-12 flex-wrap">
-            <div class="text-center">
-                <p class="text-4xl font-bold text-green-600">10K+</p>
-                <p class="text-gray-500 dark:text-gray-400">Active Users</p>
-            </div>
-            <div class="text-center">
-                <p class="text-4xl font-bold text-green-600">1M+</p>
-                <p class="text-gray-500 dark:text-gray-400">Meals Tracked</p>
-            </div>
-            <div class="text-center">
-                <p class="text-4xl font-bold text-green-600">99%</p>
-                <p class="text-gray-500 dark:text-gray-400">AI Accuracy</p>
-            </div>
+            <a href="/signup" class="px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-xl hover:bg-green-700 shadow-lg">Get Started Free 🚀</a>
+            <a href="#features" class="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-lg font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800">Learn More</a>
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
 <section id="features" class="py-20 px-4 bg-white dark:bg-gray-800">
     <div class="max-w-6xl mx-auto">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold mb-4 dark:text-white">Powerful Features</h2>
-            <p class="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
-                Everything you need to reach your fitness goals
-            </p>
+            <p class="text-gray-600 dark:text-gray-300 text-lg">Everything you need to reach your fitness goals</p>
         </div>
-        
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Feature Cards -->
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">📷</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">AI Food Recognition</h3>
-                <p class="text-gray-600 dark:text-gray-300">Snap a photo and get instant nutritional info powered by Claude AI.</p>
+                <p class="text-gray-600 dark:text-gray-300">Snap a photo and get instant nutritional info.</p>
             </div>
-            
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">📊</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">Weekly & Monthly Stats</h3>
-                <p class="text-gray-600 dark:text-gray-300">Beautiful charts showing your progress over time.</p>
+                <p class="text-gray-600 dark:text-gray-300">Beautiful charts showing your progress.</p>
             </div>
-            
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">🎯</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">Progress Tracking</h3>
-                <p class="text-gray-600 dark:text-gray-300">See how close you are to your daily calorie goal.</p>
+                <p class="text-gray-600 dark:text-gray-300">See how close you are to your daily goal.</p>
             </div>
-            
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">🏆</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">Achievements & Streaks</h3>
-                <p class="text-gray-600 dark:text-gray-300">Stay motivated with badges and daily streaks.</p>
+                <p class="text-gray-600 dark:text-gray-300">Stay motivated with badges and streaks.</p>
             </div>
-            
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">💡</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">AI Meal Suggestions</h3>
-                <p class="text-gray-600 dark:text-gray-300">Get personalized meal ideas based on your remaining calories.</p>
+                <p class="text-gray-600 dark:text-gray-300">Get meal ideas based on remaining calories.</p>
             </div>
-            
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
-                <div class="text-4xl mb-4">📱</div>
-                <h3 class="text-xl font-semibold mb-3 dark:text-white">PWA Support</h3>
-                <p class="text-gray-600 dark:text-gray-300">Install on your phone like a native app.</p>
-            </div>
-            
             <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
                 <div class="text-4xl mb-4">🌙</div>
                 <h3 class="text-xl font-semibold mb-3 dark:text-white">Dark Mode</h3>
                 <p class="text-gray-600 dark:text-gray-300">Easy on your eyes, day or night.</p>
             </div>
-            
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
-                <div class="text-4xl mb-4">🌍</div>
-                <h3 class="text-xl font-semibold mb-3 dark:text-white">Multi-Language</h3>
-                <p class="text-gray-600 dark:text-gray-300">Available in English and German.</p>
-            </div>
-            
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-8 hover:-translate-y-2 transition-transform">
-                <div class="text-4xl mb-4">📤</div>
-                <h3 class="text-xl font-semibold mb-3 dark:text-white">Export Data</h3>
-                <p class="text-gray-600 dark:text-gray-300">Download your data as CSV anytime.</p>
-            </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
 <section class="py-20 px-4">
     <div class="max-w-4xl mx-auto">
         <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-3xl p-12 text-center shadow-2xl">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Start Your Health Journey Today!</h2>
-            <p class="text-green-100 text-lg mb-8">Join thousands of users achieving their fitness goals with AI</p>
-            <a href="/signup" class="inline-block px-8 py-4 bg-white text-green-600 text-lg font-semibold rounded-xl hover:bg-gray-100 transition">
-                Create Free Account 🎉
-            </a>
+            <p class="text-green-100 text-lg mb-8">Join thousands achieving their fitness goals with AI</p>
+            <a href="/signup" class="inline-block px-8 py-4 bg-white text-green-600 text-lg font-semibold rounded-xl hover:bg-gray-100">Create Free Account 🎉</a>
         </div>
     </div>
 </section>
 
-<!-- Footer -->
 <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
-    <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 dark:text-gray-400">
-        <p>© 2026 CalorieSnap. Made with ❤️ for healthy living.</p>
-    </div>
+    <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 dark:text-gray-400">© 2026 CalorieSnap</div>
 </footer>
 {% endblock %}
