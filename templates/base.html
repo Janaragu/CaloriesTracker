@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}CalorieSnap{% endblock %}</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#10b981">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -19,12 +28,24 @@
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .progress-ring { transition: stroke-dashoffset 0.5s ease; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors">
     {% block content %}{% endblock %}
     
     <script>
+        // Check dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Toggle dark mode
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+        
         // Global helper functions
         async function apiCall(url, options = {}) {
             try {
@@ -44,14 +65,96 @@
         
         function showAlert(message, type = 'info') {
             const alertDiv = document.createElement('div');
-            alertDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+            alertDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all ${
                 type === 'error' ? 'bg-red-500 text-white' :
                 type === 'success' ? 'bg-green-500 text-white' :
                 'bg-blue-500 text-white'
             }`;
             alertDiv.textContent = message;
             document.body.appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 3000);
+            setTimeout(() => {
+                alertDiv.style.opacity = '0';
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 3000);
+        }
+        
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed'));
+        }
+        
+        // Translations
+        const translations = {
+            en: {
+                dashboard: "Dashboard",
+                overview: "Overview",
+                addMeal: "Add Meal",
+                statistics: "Statistics",
+                settings: "Settings",
+                todayProgress: "Today's Progress",
+                calories: "Calories",
+                protein: "Protein",
+                carbs: "Carbs",
+                fat: "Fat",
+                todaysMeals: "Today's Meals",
+                noMeals: "No meals logged today. Add your first meal!",
+                streak: "Day Streak",
+                achievements: "Achievements",
+                weeklyStats: "Weekly Statistics",
+                monthlyStats: "Monthly Statistics",
+                aiSuggestions: "AI Meal Suggestions",
+                getSuggestions: "Get Suggestions",
+                exportData: "Export Data",
+                darkMode: "Dark Mode",
+                language: "Language",
+                saveProfile: "Save Profile",
+                logout: "Logout",
+                remaining: "remaining"
+            },
+            de: {
+                dashboard: "Dashboard",
+                overview: "Übersicht",
+                addMeal: "Mahlzeit hinzufügen",
+                statistics: "Statistiken",
+                settings: "Einstellungen",
+                todayProgress: "Heutiger Fortschritt",
+                calories: "Kalorien",
+                protein: "Protein",
+                carbs: "Kohlenhydrate",
+                fat: "Fett",
+                todaysMeals: "Heutige Mahlzeiten",
+                noMeals: "Keine Mahlzeiten heute. Füge deine erste hinzu!",
+                streak: "Tage Serie",
+                achievements: "Erfolge",
+                weeklyStats: "Wochenstatistik",
+                monthlyStats: "Monatsstatistik",
+                aiSuggestions: "KI Mahlzeitvorschläge",
+                getSuggestions: "Vorschläge holen",
+                exportData: "Daten exportieren",
+                darkMode: "Dunkler Modus",
+                language: "Sprache",
+                saveProfile: "Profil speichern",
+                logout: "Abmelden",
+                remaining: "übrig"
+            }
+        };
+        
+        let currentLang = localStorage.getItem('language') || 'en';
+        
+        function t(key) {
+            return translations[currentLang][key] || key;
+        }
+        
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            updateTranslations();
+        }
+        
+        function updateTranslations() {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                el.textContent = t(el.dataset.t);
+            });
         }
     </script>
     {% block scripts %}{% endblock %}
